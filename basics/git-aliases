@@ -10,7 +10,7 @@ gco() {
             echo "gco: \"git checkout\""
             echo "usage: \"gco [branch name]\""
         else
-            git commit -m "$1"
+            git checkout "$1"
     fi
 }
 
