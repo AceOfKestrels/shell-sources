@@ -1,45 +1,79 @@
-alias gl='git log --oneline --graph --all'
-alias ga='git add .'
+# alias gl='git log --oneline --graph --all'
 alias gs='git status'
 
-gco() {
-    if [ -z "$1" ]
+gl() {
+    if [ -z "$1" ] 
+    then
+        git log --oneline --graph --all
+    else
+        if [ "$1" = "-h" ] || [ "$1" = "--help" ] 
         then
-            echo "error: branch name requires a value"
+            echo "gl: \"git log\""
+            echo "usage: \"gl <option>\""
             echo ""
-            echo "gco: \"git checkout\""
-            echo "usage: \"gco [branch name]\""
-        else
-            git checkout "$1"
+            echo "options:"
+            echo "          -h --help    | Display this help"
+            echo "          -v --verbose | Default git log"
+            echo "          -o --oneline | git log --oneline --graph --all"
+        elif [ "$1" = "-v" ] || [ "$1" = "--verbose" ] 
+        then
+            git log
+        elif [ "$1" = "-o" ] || [ "$1" = "--online" ] 
+        then
+            git log --oneline --graph --all
+        fi
+    fi
+}
+
+ga() {
+    if [ -z "$1" ] 
+    then
+        git add .
+    else
+        git add "$@"
+    fi
+}
+
+gco() {
+    if [ -z "$1" ] 
+    then
+        echo "error: branch name requires a value"
+        echo ""
+        echo "gco: \"git checkout\""
+        echo "usage: \"gco [branch name]\""
+    else
+        git checkout "$1"
     fi
 }
 
 gc() {
-    if [ -z "$1" ]
-        then
-            echo "error: commit message requires a value"
-            echo ""
-            echo "gc: \"git commit with message\""
-            echo "usage: \"gc [commit message]\""
-        else
-            git commit -m "$1"
+    if [ -z "$1" ] 
+    then
+        echo "error: commit message requires a value"
+        echo ""
+        echo "gc: \"git commit with message\""
+        echo "usage: \"gc [commit message]\""
+    else
+        git commit -m "$1"
     fi
 }
 
 gac() {
-    if [ -z "$1" ]
+    if [ -z "$1" ] 
+    then
+        echo "error: commit message requires a value"
+        echo ""
+        echo "gac: \"git stage and commit\""
+        echo "usage: \"gac [commit message] <files to stage>\""
+    else
+        local commit="$1"
+        shift
+        if [ -z "$2" ] 
         then
-            echo "error: commit message requires a value"
-            echo ""
-            echo "gac: \"git stage and commit\""
-            echo "usage: \"gac [commit message] <file to stage>\""
+            git add .
         else
-            if [ -z "$2" ]
-                then
-                    git add .
-                else
-                    git add "$2"
-            fi
-            git commit -m "$1"
+            git add "$@"
+        fi
+        git commit -m "$1"
     fi
 }
