@@ -1,0 +1,45 @@
+alias gl='git log --oneline --graph --all'
+alias ga='git add .'
+alias gs='git status'
+
+gco() {
+    if [ -z "$1" ]
+        then
+            echo "error: branch name requires a value"
+            echo ""
+            echo "gco: \"git checkout\""
+            echo "usage: \"gco [branch name]\""
+        else
+            git commit -m "$1"
+    fi
+}
+
+gc() {
+    if [ -z "$1" ]
+        then
+            echo "error: commit message requires a value"
+            echo ""
+            echo "gc: \"git commit with message\""
+            echo "usage: \"gc [commit message]\""
+        else
+            git commit -m "$1"
+    fi
+}
+
+gac() {
+    if [ -z "$1" ]
+        then
+            echo "error: commit message requires a value"
+            echo ""
+            echo "gac: \"git stage and commit\""
+            echo "usage: \"gac [commit message] <file to stage>\""
+        else
+            if [ -z "$2" ]
+                then
+                    git add .
+                else
+                    git add "$2"
+            fi
+            git commit -m "$1"
+    fi
+}
