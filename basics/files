@@ -9,6 +9,7 @@ lgrep() {
         echo
         echo "lgrep: ls | grep"
         echo "usage: lgrep [search]"
+        echo "related commands: lag llg llag"
     else
         ls | grep "$@"
     fi
@@ -21,6 +22,7 @@ lag() {
         echo
         echo "lag: la | grep"
         echo "usage: lag [search]"
+        echo "related commands: lgrep llg llag"
     else
         la | grep "$@"
     fi
@@ -33,6 +35,7 @@ llg() {
         echo
         echo "llg: ll | grep"
         echo "usage: llg [search]"
+        echo "related commands: lgrep lag llag"
     else
         ll | grep "$@"
     fi
@@ -45,6 +48,7 @@ llag() {
         echo
         echo "llag: lla | grep"
         echo "usage: llag [search]"
+        echo "related commands: lgrep lag llg"
     else
         lla | grep "$@"
     fi
