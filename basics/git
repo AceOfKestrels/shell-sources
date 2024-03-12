@@ -2,11 +2,13 @@
 alias gs='git status'
 
 gl() {
-    if [ -z "$1" ] 
+    local arg="$1"
+    shift
+    if [ -z "$arg" ]
     then
-        git log --oneline --graph --all
+        git log --oneline --graph --all "$@"
     else
-        if [ "$1" = "-h" ] || [ "$1" = "--help" ] 
+        if [ "$arg" = "-h" ] || [ "$arg" = "--help" ] 
         then
             echo "gl: \"git log\""
             echo "usage: \"gl <option>\""
@@ -15,12 +17,16 @@ gl() {
             echo "          -h --help    | Display this help"
             echo "          -v --verbose | Default git log"
             echo "          -o --oneline | git log --oneline --graph --all"
-        elif [ "$1" = "-v" ] || [ "$1" = "--verbose" ] 
+            echo ""
+            echo "additional arguments will be passed to git log"
+        elif [ "$arg" = "-v" ] || [ "$arg" = "--verbose" ] 
         then
-            git log
-        elif [ "$1" = "-o" ] || [ "$1" = "--online" ] 
+            git log "$@"
+        elif [ "$arg" = "-o" ] || [ "$arg" = "--online" ] 
         then
-            git log --oneline --graph --all
+            git log --oneline --graph --all "$@"
+        else
+            git log --oneline --graph --all "$arg" "$@"
         fi
     fi
 }
