@@ -1,0 +1,8 @@
+reload() {
+    echo "Reloading .bashrc"
+    source ~/.bashrc
+}
+
+alias cls="clear"
+
+alias ..="cd .."
