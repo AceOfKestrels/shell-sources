@@ -74,6 +74,6 @@ gac() {
         else
             git add "$@"
         fi
-        git commit -m "$1"
+        git commit -m "$commit"
     fi
 }
