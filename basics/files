@@ -1,3 +1,51 @@
 alias la="ls -A"
 alias ll="ls -l"
 alias lla="ls -l -A"
+
+lgrep() {
+    if [ -z "$1" ]
+    then
+        echo "error: search requires a value"
+        echo
+        echo "lgrep: ls | grep"
+        echo "usage: lgrep [search]"
+    else
+        ls | grep "$@"
+    fi
+}
+
+lag() {
+    if [ -z "$1" ]
+    then
+        echo "error: search requires a value"
+        echo
+        echo "lag: la | grep"
+        echo "usage: lag [search]"
+    else
+        la | grep "$@"
+    fi
+}
+
+llg() {
+    if [ -z "$1" ]
+    then
+        echo "error: search requires a value"
+        echo
+        echo "llg: ll | grep"
+        echo "usage: llg [search]"
+    else
+        ll | grep "$@"
+    fi
+}
+
+llag() {
+    if [ -z "$1" ]
+    then
+        echo "error: search requires a value"
+        echo
+        echo "llag: lla | grep"
+        echo "usage: llag [search]"
+    else
+        lla | grep "$@"
+    fi
+}
