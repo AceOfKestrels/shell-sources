@@ -74,7 +74,7 @@ gac() {
     else
         local commit="$1"
         shift
-        if [ -z "$2" ] 
+        if [ -z "$1" ] 
         then
             git add .
         else
