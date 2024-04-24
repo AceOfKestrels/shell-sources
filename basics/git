@@ -1,4 +1,3 @@
-# alias gl='git log --oneline --graph --all'
 alias gs='git status'
 
 gl() {
@@ -59,8 +58,27 @@ gc() {
         echo ""
         echo "gc: \"git commit with message\""
         echo "usage: \"gc [commit message]\""
+        echo ""
+        echo "options:"
+        echo "          -i --ignore-max-length  | Ignore the 50 character length limit of commit messages"
     else
-        git commit -m "$1"
+        local commit="$1"
+        shift
+
+        if [ "$1" = "--ignore-max-length" ] || [ "$1" = "-i" ]
+        then
+            shift
+        else
+            local length=$(echo -n "$commit" | wc -c)
+            if [ "$length" -gt 50 ]
+            then
+                echo "error: commit message exceeds 50 characters (was $length)"
+                echo "use --ignore-max-length to ignore this constraint"
+                return
+            fi
+        fi
+
+        git commit -m "$commit"
     fi
 }
 
@@ -70,16 +88,34 @@ gac() {
         echo "error: commit message requires a value"
         echo ""
         echo "gac: \"git stage and commit\""
-        echo "usage: \"gac [commit message] <files to stage>\""
+        echo "usage: \"gac [commit message] <options> <files to stage>\""
+        echo ""
+        echo "options:"
+        echo "          -i --ignore-max-length  | Ignore the 50 character length limit of commit messages"
     else
         local commit="$1"
         shift
+
+        if [ "$1" = "--ignore-max-length" ] || [ "$1" = "-i" ]
+        then
+            shift
+        else
+            local length=$(echo -n "$commit" | wc -c)
+            if [ "$length" -gt 50 ]
+            then
+                echo "error: commit message exceeds 50 characters (was $length)"
+                echo "use --ignore-max-length to ignore this constraint" 
+                return
+            fi
+        fi
+
         if [ -z "$1" ] 
         then
             git add .
         else
             git add "$@"
         fi
+
         git commit -m "$commit"
     fi
 }
