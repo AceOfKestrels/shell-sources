@@ -1,0 +1,15 @@
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+# Basic settings, reload
+source ${SCRIPT_DIR}/common
+
+# Aliases and scripts for the ls command
+source ${SCRIPT_DIR}/files
+
+# Aliases and scripts for git commands
+source ${SCRIPT_DIR}/git
+
+# Misc stuff
+source ${SCRIPT_DIR}/misc
+
+unset SCRIPT_DIR

@@ -4,7 +4,4 @@ bind "set show-all-if-ambiguous on"
 reload() {
     echo "Reloading..."
     exec $SHELL
-    # source ~/.bashrc
 }
-
-alias cls="clear"
