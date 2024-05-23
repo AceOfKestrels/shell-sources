@@ -1,4 +1,9 @@
 alias gs='git status'
+alias gco='git checkout'
+
+__git_complete gco _git_checkout
+__git_complete ga _git_add
+__git_complete gac _git_add
 
 gl() {
     local arg="$1"
@@ -36,18 +41,6 @@ ga() {
         git add .
     else
         git add "$@"
-    fi
-}
-
-gco() {
-    if [ -z "$1" ] 
-    then
-        echo "error: branch name requires a value"
-        echo ""
-        echo "gco: \"git checkout\""
-        echo "usage: \"gco [branch name]\""
-    else
-        git checkout "$1"
     fi
 }
 
