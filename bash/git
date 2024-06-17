@@ -3,6 +3,8 @@
 alias gs='git status'
 alias gco='git checkout'
 alias gri='git rebase -i'
+alias gf='git fetch'
+alias gp='git push'
 
 __git_complete gco _git_checkout
 __git_complete gri _git_checkout
