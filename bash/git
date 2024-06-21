@@ -2,11 +2,13 @@
 
 alias gs='git status'
 alias gco='git checkout'
-alias gri='git rebase -i'
+alias gr='git rebase'
 alias gf='git fetch'
 alias gp='git push'
+alias gpl='git pull'
 
 __git_complete gco _git_checkout
+__git_complete gr _git_checkout
 __git_complete gri _git_checkout
 __git_complete ga _git_add
 __git_complete gac _git_add
@@ -118,5 +120,17 @@ gac() {
         fi
 
         git commit -m "$commit"
+    fi
+}
+
+gri() {
+    if [ -z "$1" ] 
+    then
+        echo "error: count requires a value"
+        echo ""
+        echo "gri: \"git rebase interactive (from head)\""
+        echo "usage: \"gri [count]\""
+    else
+        git rebase -i head~"$1"
     fi
 }
