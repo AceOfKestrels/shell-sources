@@ -11,6 +11,7 @@ __git_complete gco _git_checkout
 __git_complete gr _git_checkout
 __git_complete gri _git_checkout
 __git_complete ga _git_add
+__git_complete gca _git_add
 __git_complete gac _git_add
 
 gl() {
@@ -95,7 +96,7 @@ gac() {
         echo "options:"
         echo "          -i --ignore-max-length  | Ignore the 50 character length limit of commit messages"
     else
-        local commit="$1"
+        local message="$1"
         shift
 
         if [ "$1" = "--ignore-max-length" ] || [ "$1" = "-i" ]
@@ -103,7 +104,7 @@ gac() {
             shift
         else
             local length
-            length=$(echo -n "$commit" | wc -c)
+            length=$(echo -n "$message" | wc -c)
             if [ "$length" -gt 50 ]
             then
                 echo "error: commit message exceeds 50 characters (was $length)"
@@ -112,14 +113,28 @@ gac() {
             fi
         fi
 
-        if [ -z "$1" ] 
-        then
-            git add .
-        else
-            git add "$@"
-        fi
+        ga "$@"
+        git commit -m "$message"
+    fi
+}
 
-        git commit -m "$commit"
+gca() {
+    changes=$(git diff --stat -- "${@:-.}")
+    
+    if [ -z "$changes" ]
+    then
+        git status
+        return
+    fi
+
+    echo "[$(git rev-parse --abbrev-ref HEAD) $(git log -1 --pretty=%h)] $(git log -1 --pretty=%s)"
+    echo "$changes"
+    ga "$@"
+    error_message=$(git commit --amend --no-edit 2>&1 > /dev/null)
+    
+    if [ -n "$error_message" ]
+    then
+        echo "$error_message"
     fi
 }
 
