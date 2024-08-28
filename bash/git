@@ -63,17 +63,12 @@ gc() {
 
     local message="$1"
     shift
-
-    if [ "$1" = "--ignore-max-length" ] || [ "$1" = "-i" ]
+    
+    if [ "$1" = "--ignore-max-length" ] || [ "$1" = "-i" ] 
     then
-        shift
-    else
-        local length
-        length=$(echo -n "$message" | wc -c)
-        if [ "$length" -gt 50 ]
+        __checkCommitMessageLength "$message"
+        if [ "$retVal" != 0 ]
         then
-            echo "error: commit message exceeds 50 characters (was $length)"
-            echo "use --ignore-max-length to ignore this constraint"
             return
         fi
     fi
@@ -100,19 +95,38 @@ gac() {
     if [ "$1" = "--ignore-max-length" ] || [ "$1" = "-i" ]
     then
         shift
-    else
-        local length
-        length=$(echo -n "$message" | wc -c)
-        if [ "$length" -gt 50 ]
-        then
-            echo "error: commit message exceeds 50 characters (was $length)"
-            echo "use --ignore-max-length to ignore this constraint" 
-            return
-        fi
+        ga "$@"
+        gc "$message" -i
+        return
+    fi
+    
+    __checkCommitMessageLength "$message"
+    if [ "$retVal" != 0 ]
+    then
+        return
     fi
 
     ga "$@"
     git commit -m "$message"
+}
+
+__checkCommitMessageLength() {
+    if [ -z "$1" ]
+    then
+        retVal=1
+        return
+    fi
+  
+    length=$(echo -n "$message" | wc -c)
+    if [ "$length" -gt 50 ]
+    then
+        echo "error: commit message exceeds 50 characters (was $length)"
+        echo "use --ignore-max-length to ignore this constraint" 
+        retVal=1
+        return
+    fi
+    
+    retVal=0
 }
 
 gca() {
