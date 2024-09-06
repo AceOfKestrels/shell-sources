@@ -168,9 +168,12 @@ gitinit() {
     if [ ! -f .gitignore ]
     then
         echo "Creating default gitignore"
-        touch .gitignore
-        echo ".vs/" >> .gitignore
-        echo ".idea/" >> .gitignore
+        {
+            echo ".vs/"
+            echo ".idea/"
+            echo "obj/"
+            echo "bin/"
+        } > .gitignore
     fi
 
 }
