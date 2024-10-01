@@ -163,6 +163,12 @@ gri() {
 }
 
 gwt() {
+    if [ -z "$1" ]
+    then
+        git worktree list
+        return
+    fi
+
     arg1="$1"
     shift
 
