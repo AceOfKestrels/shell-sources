@@ -155,11 +155,33 @@ gri() {
         echo "error: count requires a value"
         echo ""
         echo "gri: \"git rebase interactive (from head)\""
-        echo "usage: \"gri [count]\""
+        echo "usage: \"gri <count>\""
         return
     fi
 
     git rebase -i head~"$1"
+}
+
+gwt() {
+    arg1="$1"
+    shift
+
+    case "$arg1" in
+        add)
+            __addgwt "$@"
+            return
+        ;;
+        remove)
+            __removegwt "$@"
+            return
+        ;;
+        list)
+            git worktree list
+            return
+        ;;
+    esac
+    
+    __helpgwt
 }
 
 gitinit() {

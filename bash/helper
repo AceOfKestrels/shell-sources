@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+__helpgwt() {
+    echo "gwt: git worktree"
+    echo "usage: \"gwt add <name> <commit-ish>\""
+    echo "  Add a worktree under ../repository.name/"
+    echo "usage: \"gwt remove <name>\""
+    echo "usage: \"gwt list\""
+}
+
+__addgwt() {
+    if [ -z "$1" ]
+    then
+        __helpgwt
+        return
+    fi
+
+    root_dir=$(basename "$(git rev-parse --show-toplevel)")
+    if [ -z "$2" ]
+    then
+        git worktree add "../.$root_dir.$1" "$1"
+    else
+        git worktree add "../.$root_dir.$1" "$2"
+    fi
+}
+
+__removegwt() {
+    if [ -z "$1" ]
+    then
+        return
+    fi
+
+    root_dir=$(basename "$(git rev-parse --show-toplevel)")
+    git worktree remove "../.$root_dir.$1"
+}
+
+__gwt_completions() {
+    local cur prev opts
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    
+    if [[ ${prev} == "gwt" ]]; then
+        opts="remove add list"
+        COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+        return 0
+    fi
+
+    if [[ ${prev} == "remove" ]]; then
+        # Fetch the linked worktrees and extract the name after the dot, excluding the repo root name
+        root_dir=$(basename "$(git rev-parse --show-toplevel)")
+        worktrees=$(git worktree list --porcelain | grep "worktree " | tail -n +2 | awk -F'/' '{print $NF}' | sed -E "s/^.${root_dir}\.//")
+        COMPREPLY=( $(compgen -W "${worktrees}" -- ${cur}) )
+        return 0
+    fi
+
+    if [[ ${prev} == "add" ]]; then
+        # Fetch the branches for git checkout
+        branches=$(git branch -r | sed 's/origin\///')
+        COMPREPLY=( $(compgen -W "${branches}" -- ${cur}) )
+        return 0
+    fi
+}
+
+complete -F __gwt_completions gwt
