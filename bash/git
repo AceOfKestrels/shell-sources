@@ -30,8 +30,8 @@ gl() {
             echo "usage: \"gl <option>\""
             echo ""
             echo "options:"
-            echo "          -h --help    | Display this help"
-            echo "          -v --verbose | Default git log"
+            echo "  -h --help       Display this help"
+            echo "  -v --verbose    Default git log"
             echo ""
             echo "additional arguments will be passed to git log"
         ;;
@@ -57,14 +57,14 @@ gc() {
         echo "usage: \"gc [commit message]\""
         echo ""
         echo "options:"
-        echo "          -i --ignore-max-length  | Ignore the 50 character length limit of commit messages"
+        echo "  -f --force  Ignore the 50 character length limit of commit messages"
         return
     fi
 
     local message="$1"
     shift
     
-    if ! [ "$1" = "--ignore-max-length" ] && ! [ "$1" = "-i" ] 
+    if ! [ "$1" = "--force" ] && ! [ "$1" = "-f" ] 
     then
         __checkCommitMessageLength "$message"
         if [ "$retVal" != 0 ]
@@ -85,14 +85,14 @@ gac() {
         echo "usage: \"gac [commit message] <options> <files to stage>\""
         echo ""
         echo "options:"
-        echo "          -i --ignore-max-length  | Ignore the 50 character length limit of commit messages"
+        echo "  -f --force  Ignore the 50 character length limit of commit messages"
         return
     fi
 
     local message="$1"
     shift
 
-    if [ "$1" = "--ignore-max-length" ] || [ "$1" = "-i" ]
+    if [ "$1" = "--force" ] || [ "$1" = "-f" ]
     then
         shift
         ga "$@"
@@ -121,7 +121,7 @@ __checkCommitMessageLength() {
     if [ "$length" -gt 50 ]
     then
         echo "error: commit message exceeds 50 characters (was $length)"
-        echo "use --ignore-max-length to ignore this constraint" 
+        echo "use --force to ignore this constraint" 
         retVal=1
         return
     fi
