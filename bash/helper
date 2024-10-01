@@ -68,12 +68,9 @@ __gwt_completions() {
         return 0
     fi
 
-    if [[ ${prev} == "add" ]]; then
-        # Fetch the branches for git checkout
-        branches=$(git branch -r | sed 's/origin\///')
-        COMPREPLY=( $(compgen -W "${branches}" -- ${cur}) )
-        return 0
-    fi
+    # Fetch the branches for git checkout
+    branches=$(git branch --list -a | sed 's/remotes\///' | sed 's/^[(*+) ] //')
+    COMPREPLY=( $(compgen -W "${branches}" -- ${cur}) )
 }
 
 complete -F __gwt_completions gwt
