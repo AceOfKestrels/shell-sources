@@ -179,6 +179,10 @@ gwt() {
             git worktree list
             return
         ;;
+        cd)
+            __cdgwt "$@"
+            return
+        ;;
     esac
     
     __helpgwt
