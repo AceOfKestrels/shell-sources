@@ -7,6 +7,7 @@ alias gf='git fetch'
 alias gp='git push'
 alias gpl='git pull'
 
+__git_complete gp _git_checkout
 __git_complete gco _git_checkout
 __git_complete gr _git_checkout
 __git_complete gri _git_checkout
