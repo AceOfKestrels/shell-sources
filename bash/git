@@ -96,7 +96,7 @@ gac() {
     then
         shift
         ga "$@"
-        gc "$message" -i
+        gc "$message" -f
         return
     fi
     
