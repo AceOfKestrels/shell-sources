@@ -11,6 +11,3 @@ The `source-all` file automatically sources all others:
 ```
 source ~/bashrc-sources/source-all
 ```
-<br>
-
-The `settings` folder contains exported settings for other programs I use across devices.
