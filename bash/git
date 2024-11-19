@@ -12,6 +12,7 @@ __git_complete gco _git_checkout
 __git_complete gr _git_checkout
 __git_complete gri _git_checkout
 __git_complete ga _git_add
+__git_complete gre _git_add
 __git_complete gca _git_add
 __git_complete gac _git_add
 
@@ -193,6 +194,10 @@ gwt() {
     esac
     
     __helpgwt
+}
+
+gre() {
+    git restore "${@:-.}"
 }
 
 gitinit() {
