@@ -59,7 +59,7 @@ gc() {
         echo "usage: \"gc [commit message]\""
         echo ""
         echo "options:"
-        echo "  -f --force  Ignore the 50 character length limit of commit messages"
+        echo "  -f --force  Ignore the length limit of commit messages"
         return
     fi
 
@@ -87,7 +87,7 @@ gac() {
         echo "usage: \"gac [commit message] <options> <files to stage>\""
         echo ""
         echo "options:"
-        echo "  -f --force  Ignore the 50 character length limit of commit messages"
+        echo "  -f --force  Ignore the length limit of commit messages"
         return
     fi
 
