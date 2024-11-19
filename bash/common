@@ -3,6 +3,19 @@
 bind "set completion-ignore-case on"
 bind "set show-all-if-ambiguous on"
 
+__currentusername="$(whoami)"
+__desktoppath="$HOME/Desktop"
+
+home() {
+    cd ~ || return
+
+    echo "Welcome home, $__currentusername!"
+}
+
+desktop() {
+    cd "$__desktoppath" || return
+}
+
 reload() {
     echo "Reloading..."
     exec $SHELL
