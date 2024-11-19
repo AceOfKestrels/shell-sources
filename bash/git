@@ -174,15 +174,15 @@ gwt() {
     shift
 
     case "$arg1" in
-        add)
+        add | a)
             __addgwt "$@"
             return
         ;;
-        remove)
+        remove | r)
             __removegwt "$@"
             return
         ;;
-        list)
+        list | l)
             git worktree list
             return
         ;;
