@@ -20,11 +20,12 @@ __addgwt() {
     fi
 
     root_dir=$(basename "$(git rev-parse --show-toplevel)")
+    worktree_dir="${1//[\/\\]/-}"
     if [ -z "$2" ]
     then
-        git worktree add "../.$root_dir.$1" "$1"
+        git worktree add "../.$root_dir.$worktree_dir" "$1"
     else
-        git worktree add "../.$root_dir.$1" "$2"
+        git worktree add "../.$root_dir.$worktree_dir" "$2"
     fi
 }
 
