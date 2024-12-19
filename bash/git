@@ -181,7 +181,7 @@ gre() {
 }
 
 gp() {
-    if ! [ -z "$1" ] || [ git rev-parse --abbrev-ref @{u} >/dev/null 2>&1 ]
+    if ! [ -z "$1" ] || git rev-parse --abbrev-ref @{u} >/dev/null 2>&1;
     then
         git push "$@"
         return
