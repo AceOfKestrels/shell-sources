@@ -4,7 +4,6 @@ alias gs='git status'
 alias gco='git checkout'
 alias gr='git rebase'
 alias gf='git fetch'
-alias gp='git push'
 alias gpl='git pull'
 
 __git_complete gp _git_checkout
@@ -179,6 +178,17 @@ gwt() {
 
 gre() {
     git restore "${@:-.}"
+}
+
+gp() {
+    if ! [ -z "$1" ] || [ git rev-parse --abbrev-ref @{u} >/dev/null 2>&1 ]
+    then
+        git push "$@"
+        return
+    fi
+
+    branch_name=$(git rev-parse --abbrev-ref HEAD)
+    git push -u origin "$branch_name"
 }
 
 gitinit() {
