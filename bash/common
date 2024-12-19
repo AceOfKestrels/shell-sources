@@ -20,3 +20,12 @@ reload() {
     echo "Reloading..."
     exec $SHELL
 }
+
+updatebashconfigs() {
+    cd "$__bash_configs_dir" || return
+    if git pull
+    then
+        reload
+    fi
+    cd - >/dev/null 2>&1 || return
+}

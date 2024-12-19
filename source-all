@@ -1,5 +1,3 @@
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+__bash_configs_dir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-for f in ${SCRIPT_DIR}/bash/*; do source $f; done
-
-unset SCRIPT_DIR
+for f in ${__bash_configs_dir}/bash/*; do source $f; done
