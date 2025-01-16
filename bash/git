@@ -141,7 +141,7 @@ gri() {
         return
     fi
 
-    git rebase -i head~"$1"
+    git -c commit.cleanup=verbatim rebase -i head~"$1"
 }
 
 gwt() {
