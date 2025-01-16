@@ -18,14 +18,22 @@ desktop() {
 
 reload() {
     echo "Reloading..."
-    exec $SHELL
-}
-
-updatebashconfigs() {
-    cd "$__bash_configs_dir" || return
-    if git pull
+    if [ -z "$1" ]
     then
-        reload
+        exec $SHELL
     fi
-    cd - >/dev/null 2>&1 || return
+
+    if [ "$1" = "-u" ] || [ "$1" = "--update" ]
+    then
+        cd "$__bash_configs_dir" || return
+        git pull 
+        cd - >/dev/null 2>&1 || return
+        exec $SHELL
+    fi
+
+    echo "reload: \"reload .bashrc\""
+    echo "usage: \"reload <options>\""
+    echo ""
+    echo "options:"
+    echo "  -u --update  Pull new changes from remote before reloading"
 }
