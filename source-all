@@ -1,3 +1,7 @@
-__bash_configs_dir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+# Get the directory of the current script
+__bash_configs_dir=$(dirname -- "${BASH_SOURCE[0]}")
 
-for f in ${__bash_configs_dir}/bash/*; do source $f; done
+# Loop through and source bash files in the configs directory
+for f in "${__bash_configs_dir}/bash"/*; do
+  source "$f"
+done
