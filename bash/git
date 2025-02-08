@@ -137,11 +137,18 @@ gri() {
         echo "error: count requires a value"
         echo ""
         echo "gri: \"git rebase interactive (from head)\""
-        echo "usage: \"gri <count>\""
+        echo "usage: \"gri <count> [options]\""
+        echo "options:"
+        echo "  -v --verbatim  Take the edited commit message verbatim. Allows for the message to start with #. Remember to remove the additional lines in the rebase editor!"
         return
     fi
 
-    git -c commit.cleanup=verbatim rebase -i head~"$1"
+    if [ "$2" = "-v" ] | [ "$2" = "--verbatim" ]
+    then
+        git -c commit.cleanup=verbatim rebase -i head~"$1"
+    else
+        git rebase -i head~"$1"
+    fi
 }
 
 gwt() {
