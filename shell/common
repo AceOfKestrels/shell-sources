@@ -1,7 +1,7 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
-bind "set completion-ignore-case on"
-bind "set show-all-if-ambiguous on"
+# bind "set completion-ignore-case on"
+# bind "set show-all-if-ambiguous on"
 
 __currentusername="$(whoami)"
 __desktoppath="$HOME/Desktop"
@@ -16,6 +16,8 @@ desktop() {
     cd "$__desktoppath" || return
 }
 
+__shell_sources_dir="$HOME/shell-sources/";
+
 reload() {
     echo "Reloading..."
     if [ -z "$1" ]
@@ -25,7 +27,7 @@ reload() {
 
     if [ "$1" = "-u" ] || [ "$1" = "--update" ]
     then
-        cd "$__bash_configs_dir" || return
+        cd "$__shell_sources_dir" || return
         git pull 
         cd - >/dev/null 2>&1 || return
         exec $SHELL

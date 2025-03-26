@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 alias gs='git status'
 alias gco='git checkout'
@@ -6,14 +6,14 @@ alias gr='git rebase'
 alias gf='git fetch'
 alias gpl='git pull'
 
-__git_complete gp _git_checkout
-__git_complete gco _git_checkout
-__git_complete gr _git_checkout
-__git_complete gri _git_checkout
-__git_complete ga _git_add
-__git_complete gre _git_add
-__git_complete gca _git_add
-__git_complete gac _git_add
+# __git_complete gp _git_checkout
+# __git_complete gco _git_checkout
+# __git_complete gr _git_checkout
+# __git_complete gri _git_checkout
+# __git_complete ga _git_add
+# __git_complete gre _git_add
+# __git_complete gca _git_add
+# __git_complete gac _git_add
 
 gl() {
     if [ -z "$1" ]

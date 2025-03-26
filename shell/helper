@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 __maxgitcommitmessagelength=50
 
@@ -95,4 +95,4 @@ __gwt_completions() {
     COMPREPLY=( $(compgen -W "${branches}" -- ${cur}) )
 }
 
-complete -F __gwt_completions gwt
+# complete -F __gwt_completions gwt
