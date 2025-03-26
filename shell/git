@@ -6,6 +6,17 @@ alias gr='git rebase'
 alias gf='git fetch'
 alias gpl='git pull'
 
+# Chatty says this works, please try it out some time
+# Enable completion in both Bash and Zsh
+# if [ -n "$BASH_VERSION" ]; then
+#     # Bash completion
+#     complete -o default -o nospace -F _git_add ga
+# elif [ -n "$ZSH_VERSION" ]; then
+#     # Zsh completion
+#     autoload -Uz compinit && compinit
+#     compdef _git ga=git-add
+# fi
+
 # __git_complete gp _git_checkout
 # __git_complete gco _git_checkout
 # __git_complete gr _git_checkout
