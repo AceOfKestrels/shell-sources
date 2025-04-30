@@ -1,9 +1,13 @@
 #!/usr/bin/env sh
 
-# TODO: Get the directory of the current script
-__shell_sources_dir="$HOME/shell-sources/";
+__source_all() {
+    for f in "$SHELL_SOURCES_DIR/$1"/*; do
+        source "$f"
+    done
+}
 
-# Loop through and source sh files in the configs directory
-for f in "${__shell_sources_dir}/shell"/*; do
-  source "$f"
-done
+__source_all "shell"
+
+if [ -d "/etc/nixos/" ]; then
+    __source_all "nix"
+fi

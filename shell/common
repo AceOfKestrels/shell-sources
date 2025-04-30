@@ -16,7 +16,6 @@ desktop() {
     cd "$__desktoppath" || return
 }
 
-__shell_sources_dir="$HOME/shell-sources/";
 
 reload() {
     echo "Reloading..."
@@ -27,7 +26,8 @@ reload() {
 
     if [ "$1" = "-u" ] || [ "$1" = "--update" ]
     then
-        cd "$__shell_sources_dir" || return
+        __shell_sources_dir=$(dirname $(readlink -f "$0"))
+        cd "$__shell_sources_dir/.." || return
         git pull 
         cd - >/dev/null 2>&1 || return
         exec $SHELL
