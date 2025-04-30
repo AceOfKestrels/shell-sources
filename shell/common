@@ -16,7 +16,7 @@ desktop() {
     cd "$__desktoppath" || return
 }
 
-__shell_sources_dir="$HOME/shell-sources/";
+__shell_sources_dir=$(dirname $(readllink -f "$0"))
 
 reload() {
     echo "Reloading..."
