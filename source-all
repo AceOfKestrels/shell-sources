@@ -1,9 +1,12 @@
 #!/usr/bin/env sh
 
-# TODO: Get the directory of the current script
-__shell_sources_dir=$(dirname $(readllink -f "$0"))
+__source_all() {
+    dir=$(dirname $(readlink -f "$0"))
+    source "$dir/$1"/*
+}
 
-# Loop through and source sh files in the configs directory
-for f in "${__shell_sources_dir}/shell"/*; do
-  source "$f"
-done
+__source_all "shell"
+
+if [ -d "/etc/nixos/" ]; then
+    __source_all "nix"
+fi
