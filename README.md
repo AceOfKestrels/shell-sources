@@ -1,12 +1,19 @@
 These are the shell source files and other common settings I use. 
 
-Clone the repo somewhere and add a `source` command to your `.shrc`/`.bashrc`/`.zshrc`/etc pointing to the file you want to add:
-```
-source ~/shell-sources/bash/common
-source ~/shell-sources/bash/git
-source ~/shell-sources/bash/files
-```
-The `source-all` file automatically sources all others:
-```
-source ~/shell-sources/source-all
-```
+## Installation
+1. Clone the repo 
+2. In your `.*rc`:
+    1. Set the `SHELL_SOURCES_DIR` variable to the directory you cloned into:
+        ```sh
+        export SHELL_SOURCES_DIR="$HOME/shell-sources"
+        ```
+    2. Add a `source` command to the files you want to source:
+        ```sh
+        source ~/shell-sources/shell/common
+        source ~/shell-sources/shell/git
+        source ~/shell-sources/shell/files
+        ```
+        The `source-all` file automatically sources all others:
+        ```sh
+        source ~/shell-sources/source-all
+        ```
