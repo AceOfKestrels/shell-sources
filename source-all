@@ -1,7 +1,9 @@
 #!/usr/bin/env sh
 
 __source_all() {
-    source "$SHELL_SOURCES_DIR/$1"/*
+    for f in "$SHELL_SOURCES_DIR/$1"/*; do
+        source "$f"
+    done
 }
 
 __source_all "shell"
