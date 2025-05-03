@@ -1,8 +1,7 @@
 #!/usr/bin/env sh
 
 __source_all() {
-    dir=$(dirname $(readlink -f "$0"))
-    source "$dir/$1"/*
+    source "$SHELL_SOURCES_DIR/$1"/*
 }
 
 __source_all "shell"
