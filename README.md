@@ -9,11 +9,11 @@ These are the shell source files and other common settings I use.
         ```
     2. Add a `source` command to the files you want to source:
         ```sh
-        source ~/shell-sources/shell/common
-        source ~/shell-sources/shell/git
-        source ~/shell-sources/shell/files
+        source "$SHELL_SOURCES_DIR/shell/common"
+        source "$SHELL_SOURCES_DIR/shell/git"
+        source "$SHELL_SOURCES_DIR/shell/files"
         ```
         The `source-all` file automatically sources all others:
         ```sh
-        source ~/shell-sources/source-all
+        source "$SHELL_SOURCES_DIR/source-all"
         ```
