@@ -75,10 +75,14 @@ rebuild() {
 
     case "$shutdown" in
         s)
+            echo "Shutting down in 10 seconds..."
+            sleep 10
             shutdown now
         ;;
         r)
-            reboot now
+            echo "Rebooting in 10 seconds..."
+            sleep 10
+            reboot
         ;;
     esac
 }
