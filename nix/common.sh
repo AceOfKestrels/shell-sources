@@ -71,17 +71,15 @@ rebuild() {
         esac
     fi
 
-    sudo nixos-rebuild "$action"
+    if ! sudo nixos-rebuild "$action"; then
+        return
+    fi
 
     case "$shutdown" in
         s)
-            echo "Shutting down in 10 seconds..."
-            sleep 10
             shutdown now
         ;;
         r)
-            echo "Rebooting in 10 seconds..."
-            sleep 10
             reboot
         ;;
     esac
