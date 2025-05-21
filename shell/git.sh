@@ -216,3 +216,18 @@ gitinit() {
     fi
 
 }
+
+gb() {
+    if [ -z "$GIT_BROWSER" ]; then
+        echo "No browser configured. You must set GIT_BROWSER to a value."
+	return
+    fi
+
+    if ! git status --porcelain > /dev/null; then
+	return
+    fi
+
+    $GIT_BROWSER $(git remote get-url origin)
+}
+
+
