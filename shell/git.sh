@@ -5,6 +5,7 @@ alias gco='git checkout'
 alias gr='git rebase'
 alias gf='git fetch'
 alias gpl='git pull'
+alias pfusch='gp -f'
 
 # Only in bash; TODO: Add equivalent for ZSH
 if [ -n "$BASH_VERSION" ]; then
