@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 
 alias cls="clear"
+alias q="exit"
 alias ed="editor"
 
 editor() {
