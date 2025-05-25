@@ -228,7 +228,5 @@ gb() {
 	return
     fi
 
-    $GIT_BROWSER $(git remote get-url origin)
+    $GIT_BROWSER $GIT_BROWSER_ARGS $(git remote get-url origin)
 }
-
-
