@@ -1,7 +1,9 @@
 #! /bin/sh
 
+alias calc="nix-shell -p python3 --run python"
+
 upgrade() {
-    shutdown="-s"
+    shutdown=""
     if [ -n "$1" ]; then
         case "$1" in
             --shutdown|-s|--reboot|-r)
