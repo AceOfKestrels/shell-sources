@@ -228,5 +228,43 @@ gb() {
 	return
     fi
 
-    $GIT_BROWSER $GIT_BROWSER_ARGS $(git remote get-url origin)
+    $GIT_BROWSER "$GIT_BROWSER_ARGS" "$(git remote get-url origin)"
+}
+
+gprune() {
+    remote="$(git remote)"
+    
+    delete=false
+    if [ "$1" = "-d" ] || [ "$1" = "--delete" ]; then
+        delete=true
+    fi
+
+    if [ "$delete" = "false" ]; then 
+        echo "The following branches have no remote:"
+    fi
+
+    git branch -vv | while read -r branch; do
+        if echo "$branch" | grep -q -E "^\*.+"; then # current branch
+            continue
+        fi
+
+        if ! echo "$branch" | grep -q -E ".+\[$remote\/.+: gone\].+"; then # !upstream gone
+            if echo "$branch" | grep -q -E ".+\[$remote\/.+\].+"; then # upstream exists
+                continue
+            fi
+        fi
+
+        branch="$(echo "$branch" | cut -d ' ' -f 1)"
+
+        if [ "$delete" = "true" ]; then
+            git branch -D "$branch"
+        else
+            echo "    $branch"
+        fi
+    done
+
+    if [ "$delete" = "false" ]; then 
+        echo
+        echo "Use \"gprune --delete\" to delete"
+    fi
 }
