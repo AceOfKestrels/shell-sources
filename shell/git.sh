@@ -248,8 +248,8 @@ gprune() {
             continue
         fi
 
-        if ! echo "$branch" | grep -q -E ".+\[$remote\/.+: gone\].+"; then # !upstream gone
-            if echo "$branch" | grep -q -E ".+\[$remote\/.+\].+"; then # upstream exists
+        if ! echo "$branch" | grep -q -E ".+\[$remote/.+: gone\].+"; then # !upstream gone
+            if echo "$branch" | grep -q -E ".+\[$remote/.+\].+"; then # upstream exists
                 continue
             fi
         fi
