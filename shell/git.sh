@@ -228,7 +228,11 @@ gb() {
 	return
     fi
 
-    $GIT_BROWSER "$GIT_BROWSER_ARGS" "$(git remote get-url origin)"
+    if [ -z "$GIT_BROWSER_ARGS" ]; then
+        $GIT_BROWSER "$(git remote get-url origin)"
+    else
+        $GIT_BROWSER "$GIT_BROWSER_ARGS" "$(git remote get-url origin)"
+    fi
 }
 
 gprune() {
