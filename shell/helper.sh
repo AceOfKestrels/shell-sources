@@ -1,12 +1,11 @@
-#!/usr/bin/env sh
+#! /bin/bash
 
 __maxgitcommitmessagelength=50
 
 __checkCommitMessageLength() {
     if [ -z "$1" ]
     then
-        retVal=1
-        return
+        return 0
     fi
   
     length=$(echo -n "$1" | wc -c)
@@ -14,89 +13,8 @@ __checkCommitMessageLength() {
     then
         echo "error: commit message exceeds 50 characters (was $length)"
         echo "use --force to ignore this constraint" 
-        retVal=1
-        return
-    fi
-    
-    retVal=0
-}
-
-__helpgwt() {
-    echo "gwt: git worktree"
-    echo "commands:"
-    echo "  add <name> [<commit-ish>]"
-    echo "      Add a worktree under ../.repository.name/"
-    echo "  remove <name>"
-    echo "      Remove a worktree under ../.repository.name/"
-    echo "  cd <name>"
-    echo "      Change directory to a worktree under ../.repository.name/"
-    echo "  list"
-}
-
-__addgwt() {
-    if [ -z "$1" ]
-    then
-        __helpgwt
-        return
+        return 1
     fi
 
-    root_dir=$(basename "$(git rev-parse --show-toplevel)")
-    worktree_dir="${1//[\/\\]/-}"
-    if [ -z "$2" ]
-    then
-        git worktree add "../.$root_dir.$worktree_dir" "$1"
-    else
-        git worktree add "../.$root_dir.$worktree_dir" "$2"
-    fi
+    return 0
 }
-
-__removegwt() {
-    if [ -z "$1" ]
-    then
-        return
-    fi
-
-    root_dir=$(basename "$(git rev-parse --show-toplevel)")
-    git worktree remove "../.$root_dir.$1"
-}
-
-__cdgwt() {
-    if [ -z "$1" ]
-    then
-        return
-    fi
-
-    root_dir=$(basename "$(git rev-parse --show-toplevel)")
-    cd "../.$root_dir.$1" || return
-}
-
-
-# Only in bash; TODO: Add equivalent for ZSH
-if [ -n "$BASH_VERSION" ]; then
-    __gwt_completions() {
-        cur prev opts
-        COMPREPLY=()
-        cur="${COMP_WORDS[COMP_CWORD]}"
-        prev="${COMP_WORDS[COMP_CWORD-1]}"
-        
-        if [[ ${prev} == "gwt" ]]; then
-            opts="remove add list cd"
-            COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
-            return 0
-        fi
-
-        if [[ ${prev} == "remove" ]] || [[ ${prev} == "cd" ]]; then
-            # Fetch the linked worktrees and extract the name after the dot, excluding the repo root name
-            root_dir=$(basename "$(git rev-parse --show-toplevel)")
-            worktrees=$(git worktree list --porcelain | grep "worktree " | tail -n +2 | awk -F'/' '{print $NF}' | sed -E "s/^.${root_dir}\.//")
-            COMPREPLY=( $(compgen -W "${worktrees}" -- ${cur}) )
-            return 0
-        fi
-
-        # Fetch the branches for git checkout
-        branches=$(git branch --list -a | sed 's/remotes\///' | sed 's/^[(*+) ] //')
-        COMPREPLY=( $(compgen -W "${branches}" -- ${cur}) )
-    }
-
-    complete -F __gwt_completions gwt
-fi

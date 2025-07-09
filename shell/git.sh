@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#! /bin/bash
 
 alias gs='git status'
 alias gco='git checkout'
@@ -7,7 +7,6 @@ alias gf='git fetch'
 alias gpl='git pull'
 alias pfusch='gp -f'
 
-# Only in bash; TODO: Add equivalent for ZSH
 if [ -n "$BASH_VERSION" ]; then
     __git_complete gp _git_checkout
     __git_complete gco _git_checkout
@@ -54,8 +53,7 @@ ga() {
 }
 
 gc() {
-    if [ -z "$1" ] 
-    then
+    if [ -z "$1" ]; then
         echo "error: commit message requires a value"
         echo ""
         echo "gc: \"git commit with message\""
@@ -69,11 +67,8 @@ gc() {
     message="$1"
     shift
     
-    if ! [ "$1" = "--force" ] && ! [ "$1" = "-f" ] 
-    then
-        __checkCommitMessageLength "$message"
-        if [ "$retVal" != 0 ]
-        then
+    if ! [ "$1" = "--force" ] && ! [ "$1" = "-f" ]; then
+        if ! __checkCommitMessageLength "$message"; then
             return
         fi
     fi
@@ -82,8 +77,7 @@ gc() {
 }
 
 gac() {
-    if [ -z "$1" ] 
-    then
+    if [ -z "$1" ]; then
         echo "error: commit message requires a value"
         echo ""
         echo "gac: \"git stage and commit\""
@@ -97,17 +91,14 @@ gac() {
     message="$1"
     shift
 
-    if [ "$1" = "--force" ] || [ "$1" = "-f" ]
-    then
+    if [ "$1" = "--force" ] || [ "$1" = "-f" ]; then
         shift
         ga "$@"
         gc "$message" -f
         return
     fi
     
-    __checkCommitMessageLength "$message"
-    if [ "$retVal" != 0 ]
-    then
+    if ! __checkCommitMessageLength "$message"; then
         return
     fi
 
@@ -118,8 +109,7 @@ gac() {
 gca() {
     changes=$(git diff --stat -- "${@:-.}")
     
-    if [ -z "$changes" ]
-    then
+    if [ -z "$changes" ]; then
         git status
         return
     fi
@@ -129,8 +119,7 @@ gca() {
     ga "$@"
     error_message=$(git commit --amend --no-edit 2>&1 > /dev/null)
     
-    if [ -n "$error_message" ]
-    then
+    if [ -n "$error_message" ]; then
         echo "$error_message"
     fi
 }
@@ -147,44 +136,11 @@ gri() {
         return
     fi
 
-    if [ "$2" = "-v" ] | [ "$2" = "--verbatim" ]
-    then
+    if [ "$2" = "-v" ] || [ "$2" = "--verbatim" ]; then
         git -c commit.cleanup=verbatim rebase -i HEAD~"$1"
     else
         git rebase -i HEAD~"$1"
     fi
-}
-
-gwt() {
-    if [ -z "$1" ]
-    then
-        git worktree list
-        return
-    fi
-
-    arg1="$1"
-    shift
-
-    case "$arg1" in
-        add | a)
-            __addgwt "$@"
-            return
-        ;;
-        remove | r)
-            __removegwt "$@"
-            return
-        ;;
-        list | l)
-            git worktree list
-            return
-        ;;
-        cd)
-            __cdgwt "$@"
-            return
-        ;;
-    esac
-    
-    __helpgwt
 }
 
 gre() {
@@ -192,8 +148,7 @@ gre() {
 }
 
 gp() {
-    if ! [ -z "$1" ] || git rev-parse --abbrev-ref @{u} >/dev/null 2>&1;
-    then
+    if [ -n "$1" ] || git rev-parse --abbrev-ref @\{u\} >/dev/null 2>&1; then
         git push "$@"
         return
     fi
@@ -205,8 +160,7 @@ gp() {
 gitinit() {
     git init
     
-    if [ ! -f .gitignore ]
-    then
+    if [ ! -f .gitignore ]; then
         echo "Creating default gitignore"
         {
             echo ".vs/"

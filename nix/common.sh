@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 
 alias calc="nix-shell -p python3 --run python"
 

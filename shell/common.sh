@@ -1,6 +1,5 @@
-#!/usr/bin/env sh
+#! /bin/bash
 
-# Only in bash; In ZSH handled through plugins
 if [ -n "$BASH_VERSION" ]; then
     bind "set completion-ignore-case on"
     bind "set show-all-if-ambiguous on"

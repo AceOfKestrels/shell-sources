@@ -1,8 +1,8 @@
-#!/usr/bin/env sh
+#! /bin/bash
 
 __source_all() {
-    # For some reason "source *.sh" does not work...
     for f in "$SHELL_SOURCES_DIR/$1"/*.sh; do
+        # shellcheck disable=SC1090
         source "$f"
     done
 }
