@@ -16,7 +16,11 @@ dcr() {
 }
 
 dcl() {
-    docker compose logs "$@" | less -R +G
+    if where most 2> /dev/null ; then
+        docker compose logs "$@" | most +G
+    else
+        docker compose logs "$@" | less -R +G
+    fi
 }
 
 editor() {
