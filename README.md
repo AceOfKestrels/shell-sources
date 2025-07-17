@@ -26,7 +26,9 @@ These are the shell source files and other common settings I use.
         source "$SHELL_SOURCES_DIR/source-all"
         ```
 
-## Exclude Files
+## Environment
+
+### Exclude files
 
 `source-all.sh` by default sources all scripts in the repository. You can set `SHELL_SOURCES_IGNORE` to exclude individual files from this.
 
@@ -35,3 +37,9 @@ This will prevent the `git.sh` and `helper.sh` files in the `shell` directory fr
 ```sh
 SHELL_SOURCES_IGNORE="shell/git.sh shell/helper.sh"
 ```
+
+### Other settings
+
+- `GIT_BROWSER` - The command run by the `gb` alias to open the current git repo in a browser
+- `GIT_BROWSER_ARGS` - The arguments used by `gb` to open the browser
+- `GIT_COMMIT_MESSAGE_MAX_LENGTH` - When the length of a commit message exceed this value, `gc` and `gac` will throw a warning

@@ -5,20 +5,6 @@ if [ -n "$BASH_VERSION" ]; then
     bind "set show-all-if-ambiguous on"
 fi
 
-__currentusername="$(whoami)"
-__desktoppath="$HOME/Desktop"
-
-home() {
-    cd ~ || return
-
-    echo "Welcome home, $__currentusername!"
-}
-
-desktop() {
-    cd "$__desktoppath" || return
-}
-
-
 reload() {
     echo "Reloading..."
     if [ -z "$1" ]

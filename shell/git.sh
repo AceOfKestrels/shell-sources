@@ -62,20 +62,13 @@ gc() {
         echo ""
         echo "gc: \"git commit with message\""
         echo "usage: \"gc [commit message]\""
-        echo ""
-        echo "options:"
-        echo "  -f --force  Ignore the length limit of commit messages"
         return
     fi
 
     message="$1"
     shift
     
-    if ! [ "$1" = "--force" ] && ! [ "$1" = "-f" ]; then
-        if ! __checkCommitMessageLength "$message"; then
-            return
-        fi
-    fi
+    __checkCommitMessageLength "$message"
 
     git commit -m "$message"
 }
@@ -102,9 +95,7 @@ gac() {
         return
     fi
     
-    if ! __checkCommitMessageLength "$message"; then
-        return
-    fi
+    __checkCommitMessageLength "$message"
 
     ga "$@"
     git commit -m "$message"
@@ -176,6 +167,11 @@ gitinit() {
 
 }
 
+if [ -z "$GIT_BROWSER" ]; then
+    GIT_BROWSER=firefox
+    GIT_BROWSER_ARGS=""
+fi
+
 gb() {
     if [ -z "$GIT_BROWSER" ]; then
         echo "No browser configured. You must set GIT_BROWSER to a value."
@@ -183,17 +179,24 @@ gb() {
     fi
 
     if ! git status --porcelain > /dev/null; then
-	return
+	    return
+    fi
+
+    if ! where "$GIT_BROWSER" &>/dev/null ; then
+        echo "$(basename "$SHELL"): command not found: $GIT_BROWSER"
+        return
     fi
 
     if [ -z "$GIT_BROWSER_ARGS" ]; then
-        $GIT_BROWSER "$(git remote get-url origin)"
+        $GIT_BROWSER "$(git remote get-url origin)" &>/dev/null
     else
-        $GIT_BROWSER "$GIT_BROWSER_ARGS" "$(git remote get-url origin)"
+        $GIT_BROWSER "$GIT_BROWSER_ARGS" "$(git remote get-url origin)" &>/dev/null
     fi
 }
 
 gprune() {
+    git fetch --prune
+
     remote="$(git remote)"
     
     delete=false
