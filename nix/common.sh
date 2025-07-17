@@ -2,7 +2,19 @@
 
 alias calc="nix-shell -p python3 --run python"
 
+nix-channel-rollback() {
+    nixos_version=$(cut --delimiter=. --fields=3 /run/current-system/nixos-version)
+    channel="$(grep --fixed-strings --files-with-matches "$nixos_version" /nix/var/nix/profiles/per-user/root/channels-*-link/nixos/svn-revision | tail --lines=1 | cut --delimiter=- --fields=3)"
+
+    sudo nix-channel --rollback "$channel"
+}
+
 upgrade() {
+    defs="$(declare -f __runUpgrade rebuild nix-channel-rollback __rebuildHelp __upgradeHelp)"
+    sudo bash -c "$defs; __runUpgrade $*"
+}
+
+__runUpgrade() {
     shutdown=""
     if [ -n "$1" ]; then
         case "$1" in
@@ -25,7 +37,9 @@ upgrade() {
         return
     fi
 
-    rebuild boot "$shutdown"
+    if ! rebuild boot "$shutdown" ; then
+        nix-channel-rollback
+    fi
 }
 
 rebuild() {
