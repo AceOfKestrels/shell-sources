@@ -1,7 +1,7 @@
 #! /bin/bash
 
 if ! where docker &>/dev/null ; then
-    return
+    return 0
 fi
 
 if ! where sudo &>/dev/null || groups | grep -qw docker ; then

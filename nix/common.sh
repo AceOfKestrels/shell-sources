@@ -34,11 +34,12 @@ __runUpgrade() {
 
     if ! sudo nix-channel --update; then
         echo "Failed to update channel..."
-        return
+        return 1
     fi
 
     if ! rebuild boot "$shutdown" ; then
         nix-channel-rollback
+        return 1
     fi
 }
 
@@ -58,11 +59,11 @@ rebuild() {
             ;;
             --help|-h)
                 __rebuildHelp
-                return
+                return 1
             ;;
             *)
                 echo "usage: rebuild [action] [options]"
-                return
+                return 1
             ;;
         esac
     fi
@@ -72,7 +73,7 @@ rebuild() {
         case "$1" in
             --help|-h)
                 __rebuildHelp
-                return
+                return 1
             ;;
             --shutdown|-s)
                 shutdown="s"
@@ -82,13 +83,13 @@ rebuild() {
             ;;
             *)
                 echo "usage: rebuild [action] [options]"
-                return
+                return 1
             ;;
         esac
     fi
 
     if ! sudo nixos-rebuild "$action"; then
-        return
+        return 1
     fi
 
     case "$shutdown" in

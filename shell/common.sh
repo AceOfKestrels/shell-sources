@@ -14,9 +14,9 @@ reload() {
 
     if [ "$1" = "-u" ] || [ "$1" = "--update" ]
     then
-        cd "$SHELL_SOURCES_DIR" || return
+        cd "$SHELL_SOURCES_DIR" || return 1
         git pull 
-        cd - >/dev/null 2>&1 || return
+        cd - >/dev/null 2>&1 || return 1
         exec $SHELL
     fi
 

@@ -1,7 +1,7 @@
 #! /bin/bash
 
 if ! where git &>/dev/null ; then
-    return
+    return 0
 fi
 
 alias gs='git status'
@@ -26,7 +26,7 @@ gl() {
     if [ -z "$1" ]
     then
         git log --oneline --graph --all "$@"
-        return
+        return 1
     fi
 
     arg="$1"
@@ -62,7 +62,7 @@ gc() {
         echo ""
         echo "gc: \"git commit with message\""
         echo "usage: \"gc [commit message]\""
-        return
+        return 1
     fi
 
     message="$1"
@@ -82,7 +82,7 @@ gac() {
         echo ""
         echo "options:"
         echo "  -f --force  Ignore the length limit of commit messages"
-        return
+        return 1
     fi
 
     message="$1"
@@ -92,7 +92,7 @@ gac() {
         shift
         ga "$@"
         gc "$message" -f
-        return
+        return 1
     fi
     
     __checkCommitMessageLength "$message"
@@ -106,7 +106,7 @@ gca() {
     
     if [ -z "$changes" ]; then
         git status
-        return
+        return 1
     fi
 
     echo "[$(git rev-parse --abbrev-ref HEAD) $(git log -1 --pretty=%h)] $(git log -1 --pretty=%s)"
@@ -116,6 +116,7 @@ gca() {
     
     if [ -n "$error_message" ]; then
         echo "$error_message"
+        return 1
     fi
 }
 
@@ -128,7 +129,7 @@ gri() {
         echo "usage: \"gri <count> [options]\""
         echo "options:"
         echo "  -v --verbatim  Take the edited commit message verbatim. Allows for the message to start with #. Remember to remove the additional lines in the rebase editor!"
-        return
+        return 1
     fi
 
     if [ "$2" = "-v" ] || [ "$2" = "--verbatim" ]; then
@@ -145,7 +146,7 @@ gre() {
 gp() {
     if [ -n "$1" ] || git rev-parse --abbrev-ref @\{u\} >/dev/null 2>&1; then
         git push "$@"
-        return
+        return 0
     fi
 
     branch_name=$(git rev-parse --abbrev-ref HEAD)
@@ -175,22 +176,17 @@ fi
 gb() {
     if [ -z "$GIT_BROWSER" ]; then
         echo "No browser configured. You must set GIT_BROWSER to a value."
-	return
+	return 1
     fi
 
     if ! git status --porcelain > /dev/null; then
-	    return
-    fi
-
-    if ! where "$GIT_BROWSER" &>/dev/null ; then
-        echo "$(basename "$SHELL"): command not found: $GIT_BROWSER"
-        return
+	    return 1
     fi
 
     if [ -z "$GIT_BROWSER_ARGS" ]; then
-        $GIT_BROWSER "$(git remote get-url origin)" &>/dev/null
+        $GIT_BROWSER "$(git remote get-url origin)"
     else
-        $GIT_BROWSER "$GIT_BROWSER_ARGS" "$(git remote get-url origin)" &>/dev/null
+        $GIT_BROWSER "$GIT_BROWSER_ARGS" "$(git remote get-url origin)"
     fi
 }
 
