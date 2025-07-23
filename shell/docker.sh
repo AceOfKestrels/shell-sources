@@ -8,7 +8,8 @@ if ! where sudo &>/dev/null || groups | grep -qw docker ; then
 
     alias dc="docker compose"
     alias dcu="docker compose up -d"
-    alias dcb="docker compose up -d --build"
+    alias dcub="docker compose up -d --build"
+    alias dcb="docker compose build"
     alias dcd="docker compose down"
     alias dcf="docker compose logs --follow --tail 10"
 
@@ -29,7 +30,8 @@ else
 
     alias dc="sudo docker compose"
     alias dcu="sudo docker compose up -d"
-    alias dcb="sudo docker compose up -d --build"
+    alias dcub="sudo docker compose up -d --build"
+    alias dcb="sudo docker compose build"
     alias dcd="sudo docker compose down"
     alias dcf="sudo docker compose logs --follow --tail 10"
 

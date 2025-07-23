@@ -10,6 +10,7 @@ alias gr='git rebase'
 alias gf='git fetch'
 alias gpl='git pull'
 alias pfusch='gp -f'
+alias gpr="git-prune"
 
 if [ -n "$BASH_VERSION" ]; then
     __git_complete gp _git_checkout
@@ -190,7 +191,7 @@ gb() {
     fi
 }
 
-gprune() {
+git-prune() {
     git fetch --prune
 
     remote="$(git remote)"
