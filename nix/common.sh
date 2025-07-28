@@ -9,35 +9,26 @@ nix-channel-rollback() {
     sudo nix-channel --rollback "$channel"
 }
 
-upgrade() {
-    defs="$(declare -f __runUpgrade rebuild nix-channel-rollback __rebuildHelp __upgradeHelp)"
-    sudo bash -c "$defs; __runUpgrade $*"
-}
+alias __keep-sudo-alive="__start_sudo_keeper; trap __stop_sudo_keeper EXIT INT TERM"
 
-__runUpgrade() {
-    shutdown=""
+upgrade() {
     if [ -n "$1" ]; then
         case "$1" in
-            --shutdown|-s|--reboot|-r)
-                shutdown="$1"
-            ;;
             --help|-h)
-                __upgradeHelp
-                return
-            ;;
-            *)
-                echo "usage: upgrade [options]"
-                return
+                __rebuildHelp
+                return 1
             ;;
         esac
     fi
+
+    __keep-sudo-alive
 
     if ! sudo nix-channel --update; then
         echo "Failed to update channel..."
         return 1
     fi
 
-    if ! rebuild boot "$shutdown" ; then
+    if ! rebuild "$@" ; then
         nix-channel-rollback
         return 1
     fi
@@ -53,16 +44,14 @@ rebuild() {
             ;;
             --shutdown|-s)
                 shutdown="1"
+                shift
             ;;
             --reboot|-r)
                 shutdown="2"
+                shift
             ;;
             --help|-h)
                 __rebuildHelp
-                return 1
-            ;;
-            *)
-                echo "usage: rebuild [action] [options]"
                 return 1
             ;;
         esac
@@ -77,19 +66,23 @@ rebuild() {
             ;;
             --shutdown|-s)
                 shutdown="s"
+                shift
             ;;
             --reboot|-r)
                 shutdown="r"
-            ;;
-            *)
-                echo "usage: rebuild [action] [options]"
-                return 1
+                shift
             ;;
         esac
     fi
 
-    if ! sudo nixos-rebuild "$action"; then
-        return 1
+    if where nh &> /dev/null; then
+        if ! nh os "$action" -f '<nixpkgs/nixos>' "$@"; then
+            return 1
+        fi
+    else
+        if ! sudo nixos-rebuild "$action" "$@"; then
+            return 1
+        fi
     fi
 
     case "$shutdown" in
@@ -105,6 +98,8 @@ rebuild() {
 __rebuildHelp() {
     echo "usage: rebuild [action] [options]"
     echo
+    echo "uses nh if available, otherwise defaults to nixos-rebuild"
+    echo
     echo "actions:"
     echo "    switch         Run nixos-rebuild switch"
     echo "    boot           Run nixos-rebuild boot"
@@ -113,13 +108,25 @@ __rebuildHelp() {
     echo "    --shutdown -s  Shutdown afterwards"
     echo "    --reboot -b    Reboot afterwards"
     echo "    --help -h      Show this help"
+    echo
+    echo "additional arguments are passed to the rebuild command"
 }
 
-__upgradeHelp() {
-    echo "usage: upgrade [options]"
-    echo
-    echo "options:"
-    echo "    --shutdown -s  Shutdown afterwards"
-    echo "    --reboot -b    Reboot afterwards"
-    echo "    --help -h      Show this help"
+__start_sudo_keeper() {
+    sudo -v
+
+    set +m
+    (
+        while true; do
+            sleep 60
+            sudo -v
+        done
+    ) &
+
+    SUDO_REFRESH_PID=$!
+}
+
+__stop_sudo_keeper() {
+    set +m
+    kill "$SUDO_REFRESH_PID" 2>/dev/null
 }
