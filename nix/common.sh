@@ -36,6 +36,7 @@ upgrade() {
 
 rebuild() {
     action="switch"
+    shutdown=""
     if [ -n "$1" ]; then
         case "$1" in
             switch|boot)
@@ -43,11 +44,11 @@ rebuild() {
                 shift
             ;;
             --shutdown|-s)
-                shutdown="1"
+                shutdown="s"
                 shift
             ;;
             --reboot|-r)
-                shutdown="2"
+                shutdown="r"
                 shift
             ;;
             --help|-h)
@@ -57,7 +58,6 @@ rebuild() {
         esac
     fi
 
-    shutdown=""
     if [ -n "$1" ]; then
         case "$1" in
             --help|-h)
