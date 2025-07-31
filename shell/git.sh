@@ -142,6 +142,11 @@ gri() {
 
 gre() {
     git restore "${@:-.}"
+    if [ -n "$1" ]; then
+        git clean -fd -- "$@"
+    else
+        git clean -fd
+    fi
 }
 
 gp() {
