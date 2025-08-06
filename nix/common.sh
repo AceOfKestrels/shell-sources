@@ -231,7 +231,11 @@ __commitFlakeLock() {
 
     cd "$FLAKE_PATH" || return 1
     git add flake.lock || return 1
-    git commit -m "bump $(git rev-parse)/flake.lock" || return 1
+
+    nixpkgs=$(nixos-version --revision | cut -c1-7)
+    lockpath=$(git rev-parse --show-prefix | sed 's:/*$::')
+
+    git commit -m "bump $lockpath to nixpkgs $nixpkgs" || return 1
     git push || return 1
     cd - > /dev/null || return 1
 }
