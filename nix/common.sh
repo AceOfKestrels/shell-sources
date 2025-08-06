@@ -220,7 +220,7 @@ __rollbackChannelOrFlake() {
     else
         cd "$FLAKE_PATH" || return 1
         git restore flake.lock || return 1
-        cd - || return 1
+        cd - > /dev/null || return 1
     fi
 }
 
@@ -233,4 +233,5 @@ __commitFlakeLock() {
     git add flake.lock || return 1
     git commit -m "bump $(git rev-parse)/flake.lock" || return 1
     git push || return 1
+    cd - > /dev/null || return 1
 }
