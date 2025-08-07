@@ -14,7 +14,7 @@ nix-channel-rollback() {
 alias __keep-sudo-alive="__start_sudo_keeper; trap __stop_sudo_keeper EXIT INT TERM"
 
 upgrade() {
-    action="switch"
+    action="boot"
     ushutdown=""
     commitFlakeLock=0
 
