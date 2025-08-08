@@ -196,6 +196,31 @@ gb() {
     fi
 }
 
+gst() {
+    if [ -n "$1" ]; then
+        git stash "$@"
+        return 0
+    fi
+ 
+    if [ -z "$(git status --porcelain)" ]; then
+        git stash pop
+    else
+        git stash
+    fi
+}
+
+git-move() {
+    if [ -z "$1" ]; then
+        git-move "main"
+        return
+    fi
+
+    git stash
+    git checkout "$1"
+    git pull
+    git stash pop
+}
+
 git-prune() {
     git fetch --prune
 
