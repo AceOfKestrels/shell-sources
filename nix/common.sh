@@ -15,12 +15,12 @@ alias __keep-sudo-alive="__start_sudo_keeper; trap __stop_sudo_keeper EXIT INT T
 
 upgrade() {
     action="boot"
-    ushutdown=""
+    ushutdown="R"
     commitFlakeLock=0
 
     if [ -n "$1" ]; then
         case "$1" in
-            switch|boot)
+            switch|boot|test)
                 action="$1"
                 shift
             ;;
@@ -44,6 +44,10 @@ upgrade() {
                 ;;
                 --reboot|-r)
                     ushutdown="r"
+                    shift
+                ;;
+                --reload|-R)
+                    ushutdown="R"
                     shift
                 ;;
                 -c)
@@ -93,6 +97,9 @@ upgrade() {
         r)
             reboot
         ;;
+        R)
+            exec "$SHELL"
+        ;;
     esac
 }
 
@@ -101,7 +108,7 @@ rebuild() {
     shutdown=""
     if [ -n "$1" ]; then
         case "$1" in
-            switch|boot)
+            switch|boot|test)
                 action="$1"
                 shift
             ;;
@@ -120,6 +127,10 @@ rebuild() {
             ;;
             --reboot|-r)
                 shutdown="r"
+                shift
+            ;;
+            --reload|-R)
+                shutdown=R
                 shift
             ;;
         esac
@@ -154,21 +165,25 @@ rebuild() {
         r)
             reboot
         ;;
+        R)
+            exec "$SHELL"
+        ;;
     esac
 }
 
 __upgradeHelp() {
     echo "usage: upgrade [action] [options]"
     echo
+    echo "update the channels or flake then rebuild the system"
     echo "uses nh if available, otherwise defaults to nixos-rebuild"
     echo
     echo "actions:"
-    echo "    switch         Run nixos-rebuild switch"
-    echo "    boot           Run nixos-rebuild boot"
+    echo "    switch | boot | test"
     echo
     echo "options:"
     echo "    --shutdown -s  Shutdown afterwards"
-    echo "    --reboot -b    Reboot afterwards"
+    echo "    --reboot -r    Reboot afterwards"
+    echo "    --reload -R    Reload the shell afterwards"
     echo "    -c             Commit the flake.lock on successful upgrade"
     echo "    -C             Do not commit the flake.lock"
     echo "    --help -h      Show this help"
@@ -180,15 +195,16 @@ __upgradeHelp() {
 __rebuildHelp() {
     echo "usage: rebuild [action] [options]"
     echo
+    echo "rebuild the system configuration"
     echo "uses nh if available, otherwise defaults to nixos-rebuild"
     echo
     echo "actions:"
-    echo "    switch         Run nixos-rebuild switch"
-    echo "    boot           Run nixos-rebuild boot"
+    echo "    switch | boot | test"
     echo
     echo "options:"
     echo "    --shutdown -s  Shutdown afterwards"
-    echo "    --reboot -b    Reboot afterwards"
+    echo "    --reboot -r    Reboot afterwards"
+    echo "    --reload -R    Reload the shell afterwards"
     echo "    --help -h      Show this help"
     echo
     echo "additional arguments are passed to the rebuild command"
