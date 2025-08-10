@@ -232,10 +232,24 @@ __commitFlakeLock() {
     cd "$FLAKE_PATH" || return 1
     git add flake.lock || return 1
 
-    nixpkgs=$(nixos-version --revision | cut -c1-7)
-    lockpath=$(git rev-parse --show-prefix | sed 's:/*$::')
+    __createCommit
 
-    git commit -m "bump $lockpath to nixpkgs $nixpkgs" || return 1
     git push || return 1
     cd - > /dev/null || return 1
+}
+
+__createFlakeCommit() {
+    flakePath=$(git rev-parse --show-prefix | sed 's:/*$::')
+    user="${flakePath%%/*}"
+    flake="${flakePath##*/}"
+
+    if ! where jq >/dev/null; then
+        git commit -m "[$user] bump $flake"
+        return
+    fi
+
+    nixpkgs=$(jq -r '.nodes.nixpkgs.locked.rev[0:7]' flake.lock)
+    updatedInputs=$(jq -r '.nodes | to_entries[] | select(.value.locked.rev != null) | "\(.key) \(.value.locked.rev[0:7])"' flake.lock)
+
+    git commit -m "[$user] bump $flake to nixpkgs $nixpkgs" -m "$updatedInputs" || return 1
 }
