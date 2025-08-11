@@ -248,7 +248,7 @@ __commitFlakeLock() {
     cd "$FLAKE_PATH" || return 1
     git add flake.lock || return 1
 
-    __createCommit
+    __createFlakeCommit
 
     git push || return 1
     cd - > /dev/null || return 1
