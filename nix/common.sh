@@ -234,7 +234,7 @@ __rollbackChannelOrFlake() {
     if [ -z "$FLAKE_PATH" ]; then
         nix-channel-rollback
     else
-        cd "$FLAKE_PATH" || return 1
+        cd "$FLAKE_PATH" > /dev/null || return 1
         git restore flake.lock || return 1
         cd - > /dev/null || return 1
     fi
@@ -245,7 +245,7 @@ __commitFlakeLock() {
         return 1
     fi
 
-    cd "$FLAKE_PATH" || return 1
+    cd "$FLAKE_PATH" >/dev/null || return 1
     git add flake.lock || return 1
 
     __createFlakeCommit
