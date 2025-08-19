@@ -4,6 +4,8 @@ alias cls="clear"
 alias q="exit"
 alias ed="editor"
 alias fb="files"
+alias home="cd ~"
+alias back="cd -"
 
 editor() {
     if [ -z "$1" ]; then
