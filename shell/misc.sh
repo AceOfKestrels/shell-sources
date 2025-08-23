@@ -7,6 +7,9 @@ alias fb="files"
 alias home="cd ~"
 alias back="cd -"
 
+alias hibernate="systemctl hibernate"
+alias suspend="systemctl suspend"
+
 editor() {
     if [ -z "$1" ]; then
         code .
