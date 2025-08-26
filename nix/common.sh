@@ -59,7 +59,7 @@ upgrade() {
                     shift
                 ;;
                 --pull|-p)
-                    pull=1
+                    upull=1
                     shift
                 ;;
                 --)
@@ -74,6 +74,13 @@ upgrade() {
     fi
 
     __keep-sudo-alive
+
+    if [ "$upull" = 1 ]; then
+        if ! __pullConfig; then
+            echo "fatal: failed to pull config"
+            return 1
+        fi
+    fi
 
     if [ -z "$FLAKE_PATH" ]; then
         if ! sudo nix-channel --update; then
