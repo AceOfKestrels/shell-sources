@@ -50,12 +50,16 @@ upgrade() {
                     ushutdown="R"
                     shift
                 ;;
-                -c)
+                --commit|-c)
                     commitFlakeLock=1
                     shift
                 ;;
-                -C)
+                --no-commit|-C)
                     commitFlakeLock=0
+                    shift
+                ;;
+                --pull|-p)
+                    pull=1
                     shift
                 ;;
                 --)
@@ -116,24 +120,44 @@ rebuild() {
     fi
 
     if [ -n "$1" ]; then
-        case "$1" in
-            --help|-h)
-                __rebuildHelp
-                return 0
-            ;;
-            --shutdown|-s)
-                shutdown="s"
-                shift
-            ;;
-            --reboot|-r)
-                shutdown="r"
-                shift
-            ;;
-            --reload|-R)
-                shutdown=R
-                shift
-            ;;
-        esac
+        for arg in "$@"; do
+            case "$1" in
+                --help|-h)
+                    __rebuildHelp
+                    return 0
+                ;;
+                --shutdown|-s)
+                    shutdown="s"
+                    shift
+                ;;
+                --reboot|-r)
+                    shutdown="r"
+                    shift
+                ;;
+                --reload|-R)
+                    shutdown=R
+                    shift
+                ;;
+                --pull|-p)
+                    pull=1
+                    shift
+                ;;
+                --)
+                    shift
+                    break
+                ;;
+                *)
+                    break
+                ;;
+            esac
+        done
+    fi
+
+    if [ "$pull" = 1 ]; then
+        if ! __pullConfig; then
+            echo "fatal: failed to pull config"
+            return 1
+        fi
     fi
 
     if [ -z "$FLAKE_PATH" ]; then
@@ -184,8 +208,9 @@ __upgradeHelp() {
     echo "    --shutdown -s  Shutdown afterwards"
     echo "    --reboot -r    Reboot afterwards"
     echo "    --reload -R    Reload the shell afterwards"
-    echo "    -c             Commit the flake.lock on successful upgrade"
-    echo "    -C             Do not commit the flake.lock"
+    echo "    --commit -c    Commit the flake.lock on successful upgrade"
+    echo "    --no-commit -C Do not commit the flake.lock"
+    echo "    --pull -p      Perform a git pull before rebuilding"
     echo "    --help -h      Show this help"
     echo "    --             Does nothing, but all arguments after this are passed to rebuild"
     echo
@@ -205,7 +230,9 @@ __rebuildHelp() {
     echo "    --shutdown -s  Shutdown afterwards"
     echo "    --reboot -r    Reboot afterwards"
     echo "    --reload -R    Reload the shell afterwards"
+    echo "    --pull -p      Perform a git pull before rebuilding"
     echo "    --help -h      Show this help"
+    echo "    --             Does nothing, but all arguments after this are passed to rebuild"
     echo
     echo "additional arguments are passed to the rebuild command"
 }
@@ -260,7 +287,7 @@ __createFlakeCommit() {
     flake="${flakePath##*/}"
 
     if ! where jq >/dev/null; then
-        git commit -m "[$user] bump $flake"
+        git commit -m "[$user] bump $flake" || return 1
         return
     fi
 
@@ -268,4 +295,15 @@ __createFlakeCommit() {
     updatedInputs=$(jq -r '.nodes | to_entries[] | select(.value.locked.rev != null) | "\(.key) \(.value.locked.rev[0:7])"' flake.lock)
 
     git commit -m "[$user] bump $flake to nixpkgs $nixpkgs" -m "$updatedInputs" || return 1
+}
+
+__pullConfig() {
+    configPath=/etc/nixos/nixos-config
+    if [ -n "$NIXOS_CONFIG_PATH" ]; then
+        configPath="$NIXOS_CONFIG_PATH"
+    fi
+
+    cd "$configPath" >/dev/null || return 1
+    git pull --rebase=false || return 1
+    cd - >/dev/null || return 1
 }
