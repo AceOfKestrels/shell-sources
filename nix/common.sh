@@ -77,19 +77,19 @@ upgrade() {
 
     if [ "$upull" = 1 ]; then
         if ! __pullConfig; then
-            echo "fatal: failed to pull config"
+            echo "upgrade: ${F_FG_RED}fatal${F_RESET}: failed to pull config"
             return 1
         fi
     fi
 
     if [ -z "$FLAKE_PATH" ]; then
         if ! sudo nix-channel --update; then
-            echo "Failed to update channel..."
+            echo "upgrade: ${F_FG_RED}fatal${F_RESET}: failed to update channel"
             return 1
         fi
     else
         if ! sudo nix flake update --flake "$FLAKE_PATH"; then
-            echo "Failed to update flake..."
+            echo -e "upgrade: ${F_FG_RED}fatal${F_RESET}: failed to update flake.lock"
             return 1
         fi
     fi
@@ -162,7 +162,7 @@ rebuild() {
 
     if [ "$pull" = 1 ]; then
         if ! __pullConfig; then
-            echo "fatal: failed to pull config"
+            echo "rebuild: ${F_FG_RED}fatal${F_RESET}: failed to pull config"
             return 1
         fi
     fi
