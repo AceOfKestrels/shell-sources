@@ -203,43 +203,43 @@ rebuild() {
 }
 
 __upgradeHelp() {
-    echo "usage: upgrade [action] [options]"
+    echo -e "${F_FG_BLUE}usage${F_RESET}: upgrade [action] [options]"
     echo
-    echo "update the channels or flake then rebuild the system"
-    echo "uses nh if available, otherwise defaults to nixos-rebuild"
+    echo -e "update the channels or flake then rebuild the system"
+    echo -e "uses nh if available, otherwise defaults to nixos-rebuild"
     echo
-    echo "actions:"
-    echo "    switch | boot | test"
+    echo -e "${F_FG_BLUE}actions${F_RESET}:"
+    echo -e "    ${F_FG_YELLOW}switch${F_RESET} | ${F_FG_YELLOW}boot${F_RESET} | ${F_FG_YELLOW}test${F_RESET}"
     echo
-    echo "options:"
-    echo "    --shutdown -s  Shutdown afterwards"
-    echo "    --reboot -r    Reboot afterwards"
-    echo "    --reload -R    Reload the shell afterwards"
-    echo "    --commit -c    Commit the flake.lock on successful upgrade"
-    echo "    --no-commit -C Do not commit the flake.lock"
-    echo "    --pull -p      Perform a git pull before rebuilding"
-    echo "    --help -h      Show this help"
-    echo "    --             Does nothing, but all arguments after this are passed to rebuild"
+    echo -e "${F_FG_BLUE}options${F_RESET}:"
+    echo -e "    ${F_FG_YELLOW}--shutdown -s  ${F_RESET}Shutdown afterwards"
+    echo -e "    ${F_FG_YELLOW}--reboot -r    ${F_RESET}Reboot afterwards"
+    echo -e "    ${F_FG_YELLOW}--reload -R    ${F_RESET}Reload the shell afterwards"
+    echo -e "    ${F_FG_YELLOW}--commit -c    ${F_RESET}Commit the flake.lock on successful upgrade"
+    echo -e "    ${F_FG_YELLOW}--no-commit -C ${F_RESET}Do not commit the flake.lock"
+    echo -e "    ${F_FG_YELLOW}--pull -p      ${F_RESET}Perform a git pull before rebuilding"
+    echo -e "    ${F_FG_YELLOW}--help -h      ${F_RESET}Show this help"
+    echo -e "    ${F_FG_YELLOW}--             ${F_RESET}Does nothing, but all arguments after this are passed to rebuild"
     echo
-    echo "additional arguments are passed to the rebuild command"
+    echo -e "additional arguments are passed to the rebuild command"
 }
 
 __rebuildHelp() {
-    echo "usage: rebuild [action] [options]"
+    echo "${F_FG_BLUE}usage${F_RESET}: rebuild [action] [options]"
     echo
     echo "rebuild the system configuration"
     echo "uses nh if available, otherwise defaults to nixos-rebuild"
     echo
-    echo "actions:"
-    echo "    switch | boot | test"
+    echo "${F_FG_BLUE}actions${F_RESET}:"
+    echo "    ${F_FG_YELLOW}switch${F_RESET} | ${F_FG_YELLOW}boot${F_RESET} | ${F_FG_YELLOW}test${F_RESET}"
     echo
-    echo "options:"
-    echo "    --shutdown -s  Shutdown afterwards"
-    echo "    --reboot -r    Reboot afterwards"
-    echo "    --reload -R    Reload the shell afterwards"
-    echo "    --pull -p      Perform a git pull before rebuilding"
-    echo "    --help -h      Show this help"
-    echo "    --             Does nothing, but all arguments after this are passed to rebuild"
+    echo "${F_FG_BLUE}options${F_RESET}:"
+    echo "    ${F_FG_YELLOW}--shutdown -s  ${F_RESET}Shutdown afterwards"
+    echo "    ${F_FG_YELLOW}--reboot -r    ${F_RESET}Reboot afterwards"
+    echo "    ${F_FG_YELLOW}--reload -R    ${F_RESET}Reload the shell afterwards"
+    echo "    ${F_FG_YELLOW}--pull -p      ${F_RESET}Perform a git pull before rebuilding"
+    echo "    ${F_FG_YELLOW}--help -h      ${F_RESET}Show this help"
+    echo "    ${F_FG_YELLOW}--             ${F_RESET}Does nothing, but all arguments after this are passed to rebuild"
     echo
     echo "additional arguments are passed to the rebuild command"
 }

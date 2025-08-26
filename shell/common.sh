@@ -20,9 +20,10 @@ reload() {
         exec $SHELL
     fi
 
-    echo "reload: \"reload .bashrc\""
-    echo "usage: \"reload <options>\""
-    echo ""
-    echo "options:"
-    echo "  -u --update  Pull new changes from remote before reloading"
+    echo -e "${F_FG_BLUE}usage${F_RESET}: reload [options]"
+    echo
+    echo "reload shell profile"
+    echo
+    echo -e "${F_FG_BLUE}options:${F_RESET}"
+    echo -e "    ${F_FG_YELLOW}-u --update  ${F_RESET}Pull new changes from remote before reloading"
 }

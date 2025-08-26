@@ -36,7 +36,7 @@ gl() {
     case "$arg" in
         -h|--help)
             echo "gl: \"git log\""
-            echo "usage: \"gl <option>\""
+            echo "usage: \"gl [options]\""
             echo ""
             echo "options:"
             echo "  -h --help       Display this help"
@@ -59,10 +59,9 @@ ga() {
 
 gc() {
     if [ -z "$1" ]; then
-        echo "error: commit message requires a value"
-        echo ""
-        echo "gc: \"git commit with message\""
-        echo "usage: \"gc [commit message]\""
+        echo -e "gc: ${F_FG_RED}fatal${F_RESET}: commit message requires a value"
+        echo
+        echo -e "${F_FG_BLUE}usage${F_RESET}: gc <commit message>"
         return 1
     fi
 
@@ -76,26 +75,15 @@ gc() {
 
 gac() {
     if [ -z "$1" ]; then
-        echo "error: commit message requires a value"
-        echo ""
-        echo "gac: \"git stage and commit\""
-        echo "usage: \"gac [commit message] <options> <files to stage>\""
-        echo ""
-        echo "options:"
-        echo "  -f --force  Ignore the length limit of commit messages"
+        echo -e "gac: ${F_FG_RED}fatal${F_RESET}: commit message requires a value"
+        echo
+        echo -e "${F_FG_BLUE}usage${F_RESET}: gac <commit message> [files]\""
         return 1
     fi
 
     message="$1"
     shift
 
-    if [ "$1" = "--force" ] || [ "$1" = "-f" ]; then
-        shift
-        ga "$@"
-        gc "$message" -f
-        return 1
-    fi
-    
     __checkCommitMessageLength "$message"
 
     ga "$@"
@@ -181,7 +169,7 @@ fi
 
 gb() {
     if [ -z "$GIT_BROWSER" ]; then
-        echo "No browser configured. You must set GIT_BROWSER to a value."
+        echo "fatal: No browser configured. You must set GIT_BROWSER to a value."
 	    return 1
     fi
 
