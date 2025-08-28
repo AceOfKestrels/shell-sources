@@ -13,6 +13,6 @@ __source_all() {
 
 __source_all "shell"
 
-if [ -d "/etc/nixos/" ]; then
+if [ -d "/nix" ]; then
     __source_all "nix"
 fi
