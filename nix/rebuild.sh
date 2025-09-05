@@ -311,6 +311,6 @@ __pullConfig() {
     fi
 
     cd "$configPath" >/dev/null || return 1
-    git pull --rebase=false || return 1
+    git pull --ff-only || return 1
     cd - >/dev/null || return 1
 }
