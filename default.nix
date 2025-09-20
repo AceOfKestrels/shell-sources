@@ -9,6 +9,8 @@ in
     };
 
     config = lib.mkIf cfg.enable {
-        environment.interactiveShellInit = '''';
+        environment.interactiveShellInit = ''
+            . ${./source-all.sh}
+        '';
     };
 }
