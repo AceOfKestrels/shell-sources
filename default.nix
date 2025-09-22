@@ -1,4 +1,9 @@
-{ lib, config, ... }:
+{
+    lib,
+    config,
+    pkgs,
+    ...
+}:
 
 let
     cfg = config.programs.shellSources;
@@ -12,5 +17,7 @@ in
         environment.interactiveShellInit = ''
             . ${./source-all.sh}
         '';
+
+        environment.systemPackages = with pkgs; [ jq ];
     };
 }
