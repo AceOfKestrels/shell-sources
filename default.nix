@@ -15,7 +15,7 @@ in
 
     config = lib.mkIf cfg.enable {
         environment.interactiveShellInit = ''
-            . ${./source-all.sh}
+            . ${./.}/source-all.sh
         '';
 
         environment.systemPackages = with pkgs; [ jq ];
