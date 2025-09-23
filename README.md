@@ -5,26 +5,26 @@ These are the shell source files and other common settings I use.
 ## Installation
 
 1. Clone the repo
-2. In your `.*rc`:
-    1. Set the `SHELL_SOURCES_DIR` variable to the directory you cloned into:
+2. In your `.*rc` add a `source` command to the files you want to source:
 
-        ```sh
-        export SHELL_SOURCES_DIR="$HOME/shell-sources"
-        ```
+    ```sh
+    source "hell/common.sh"
+    source "shell/git.sh"
+    ```
 
-    2. Add a `source` command to the files you want to source:
+    The `source-all` file automatically sources all others:
 
-        ```sh
-        source "$SHELL_SOURCES_DIR/shell/common"
-        source "$SHELL_SOURCES_DIR/shell/git"
-        source "$SHELL_SOURCES_DIR/shell/files"
-        ```
+    ```sh
+    source "source-all.sh"
+    ```
 
-        The `source-all` file automatically sources all others:
+### When not using bash or zsh
 
-        ```sh
-        source "$SHELL_SOURCES_DIR/source-all"
-        ```
+The `source-all.sh` needs to know the directory it is in to source the rest of the files automatically. In bash and zsh this is detected automatically, but if you use a different shell, you must set `SHELL_SOURCES_DIR` manually:
+
+```sh
+export SHELL_SOURCES_DIR="$HOME/shell-sources"
+```
 
 ## Environment
 

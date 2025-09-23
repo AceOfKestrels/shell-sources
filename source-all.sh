@@ -1,5 +1,20 @@
 #! /bin/bash
 
+if [ -z "$SHELL_SOURCES_DIR" ]; then
+    if [ -n "${BASH_SOURCE-}" ]; then
+        SHELL_SOURCES_DIR=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
+    elif [ -n "${ZSH_VERSION-}" ]; then
+        # shellcheck disable=SC2296
+        SHELL_SOURCES_DIR=$(realpath "$(dirname "${(%):-%N}")")
+    else
+        echo "shell-sources: fatal: currently only bash and zsh are supported to autodetect the script directory"
+        echo "you can set SHELL_SOURCES_DIR manually"
+        return 1 2>/dev/null
+    fi
+
+    export SHELL_SOURCES_DIR
+fi
+
 __source_all() {
     for f in "$SHELL_SOURCES_DIR/$1"/*.sh; do
         relative=$(realpath "$f" --relative-to="$SHELL_SOURCES_DIR")
