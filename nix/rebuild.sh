@@ -97,7 +97,7 @@ upgrade() {
     if ! rebuild "$action" "$@" ; then
         __rollbackChannelOrFlake
         return 1
-    elif [ "$commitFlakeLock" = 1 ]; then
+    elif ! [ "$action" = "test" ] & [ "$commitFlakeLock" = 1 ]; then
         __commitFlakeLock
     fi
 
