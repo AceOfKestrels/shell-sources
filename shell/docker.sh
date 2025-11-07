@@ -4,7 +4,7 @@ if ! where docker &>/dev/null ; then
     return 0
 fi
 
-if ! where sudo &>/dev/null || groups | grep -qw docker ; then
+if ! where sudo &>/dev/null || groups 2>/dev/null | grep -qw docker ; then
 
     alias dc="docker compose"
     alias dcu="docker compose up -d"
