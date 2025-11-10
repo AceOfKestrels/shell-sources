@@ -8,7 +8,7 @@ alias gpl='git pull'
 alias pfusch='gp -f'
 alias gpr="git-prune"
 
-if [ -n "$BASH_VERSION" ]; then
+if command -v __git_complete; then
     __git_complete gp _git_checkout
     __git_complete gco _git_checkout
     __git_complete gr _git_checkout
