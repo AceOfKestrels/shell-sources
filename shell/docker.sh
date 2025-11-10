@@ -1,51 +1,29 @@
 #! /bin/bash
 
-if ! where docker &>/dev/null ; then
-    return 0
-fi
+alias dcu="dc up -d"
+alias dcub="dc up -d --build"
+alias dcb="dc build"
+alias dcd="dc down"
+alias dcf="dc logs --follow --tail 10"
 
-if ! where sudo &>/dev/null || groups 2>/dev/null | grep -qw docker ; then
+dc() {
+    # user has docker access OR sudo is not installed anyways
+    if docker info >/dev/null 2>&1 || ! command -v sudo >/dev/null 2>&1; then
+        docker compose "$@"
+    else # user has no docker access, and sudo is installed
+        sudo docker compose "$@"
+    fi
+}
 
-    alias dc="docker compose"
-    alias dcu="docker compose up -d"
-    alias dcub="docker compose up -d --build"
-    alias dcb="docker compose build"
-    alias dcd="docker compose down"
-    alias dcf="docker compose logs --follow --tail 10"
+dcr() {
+    dc down "$@"
+    dc up --build -d "$@"
+}
 
-    dcr() {
-        docker compose down "$@"
-        docker compose up --build -d "$@"
-    }
-
-    dcl() {
-        if where most &>/dev/null ; then
-            docker compose logs "$@" | most +G
-        else
-            docker compose logs "$@" | less -R +G
-        fi
-    }
-
-else
-
-    alias dc="sudo docker compose"
-    alias dcu="sudo docker compose up -d"
-    alias dcub="sudo docker compose up -d --build"
-    alias dcb="sudo docker compose build"
-    alias dcd="sudo docker compose down"
-    alias dcf="sudo docker compose logs --follow --tail 10"
-
-    dcr() {
-        sudo docker compose down "$@"
-        sudo docker compose up --build -d "$@"
-    }
-
-    dcl() {
-        if where most &>/dev/null ; then
-            sudo docker compose logs "$@" | most +G
-        else
-            sudo docker compose logs "$@" | less -R +G
-        fi
-    }
-
-fi
+dcl() {
+    if where most &>/dev/null ; then
+        dc logs "$@" | most +G
+    else
+        dc logs "$@" | less -R +G
+    fi
+}

@@ -1,9 +1,5 @@
 #! /bin/bash
 
-if ! where git &>/dev/null ; then
-    return 0
-fi
-
 alias gs='git status'
 alias gco='git checkout'
 alias gr='git rebase'
