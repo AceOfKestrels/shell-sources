@@ -2,7 +2,21 @@
 
 alias cls="clear"
 alias q="exit"
-alias ed="code"
 
 alias hibernate="systemctl hibernate"
 alias suspend="systemctl suspend"
+
+ed() {
+    cmd="$CODE_PROGRAM"
+
+    if [ -z "$cmd" ]; then
+        cmd="code"
+    fi
+
+    if [ -z "$@" ]; then
+        $cmd .
+        return 0
+    fi
+
+    $cmd "$@"
+}
