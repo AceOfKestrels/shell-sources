@@ -20,3 +20,14 @@ ed() {
 
     $cmd "$@"
 }
+
+ex() {
+    cmd="$FILE_EXPLORER"
+
+    if [ -z "$cmd" ]; then
+        echo "FILE_EXPLORER variable is not set"
+        return 1
+    fi
+
+    $cmd "$@"
+}

@@ -44,3 +44,4 @@ SHELL_SOURCES_IGNORE="shell/git.sh shell/helper.sh"
 - `GIT_BROWSER_ARGS` - The arguments used by `gb` to open the browser
 - `GIT_COMMIT_MESSAGE_MAX_LENGTH` - When the length of a commit message exceed this value, `gc` and `gac` will throw a warning
 - `CODE_PROGRAM` - The command run by the `ed` alias. Defaults to `code`
+- `FILE_EXPLORER` - The command run by the `ex` alias to open a file explorer.
