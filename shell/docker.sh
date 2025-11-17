@@ -7,11 +7,14 @@ alias dcd="dc down"
 alias dcf="dc logs --follow --tail 10"
 
 dc() {
-    # user has docker access OR sudo is not installed anyways
-    if docker info >/dev/null 2>&1 || ! command -v sudo >/dev/null 2>&1; then
+    # user has docker access
+    if docker info >/dev/null 2>&1; then
         docker compose "$@"
-    else # user has no docker access, and sudo is installed
+    # user has sudo access to docker
+    elif sudo docker info >/dev/null; then
         sudo docker compose "$@"
+    else
+        echo "fatal: unable to access docker"
     fi
 }
 
