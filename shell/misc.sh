@@ -13,7 +13,7 @@ ed() {
         cmd="code"
     fi
 
-    if [ -z "$@" ]; then
+    if [ -z "$1" ]; then
         $cmd .
         return 0
     fi
