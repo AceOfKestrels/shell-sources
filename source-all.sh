@@ -1,7 +1,7 @@
 #! /bin/bash
 
 if [ "$1" = "--packaged" ]; then
-    SHELL_SOURCES_PACKAGED=true
+    export SHELL_SOURCES_PACKAGED=true
 fi
 
 if [ -z "$SHELL_SOURCES_DIR" ]; then
