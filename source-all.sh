@@ -1,5 +1,9 @@
 #! /bin/bash
 
+if [ "$1" = "--packaged" ]; then
+    SHELL_SOURCES_PACKAGED=true
+fi
+
 if [ -z "$SHELL_SOURCES_DIR" ]; then
     if [ -n "${BASH_SOURCE-}" ]; then
         SHELL_SOURCES_DIR=$(realpath "$(dirname "${BASH_SOURCE[0]}")")

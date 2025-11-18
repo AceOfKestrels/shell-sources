@@ -22,10 +22,10 @@ ed() {
 }
 
 ex() {
-    cmd="$FILE_EXPLORER"
+    cmd="$FILE_BROWSER"
 
     if [ -z "$cmd" ]; then
-        echo "FILE_EXPLORER variable is not set"
+        echo "FILE_BROWSER variable is not set"
         return 1
     fi
 

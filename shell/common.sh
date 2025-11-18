@@ -12,6 +12,11 @@ reload() {
     fi
 
     if [ "$1" = "-u" ] || [ "$1" = "--update" ]; then
+        if [ "$SHELL_SORUCES_PACKAGED" = true ]; then
+            echo "${F_FG_RED}fatal${F_RESET}: only supported in standalone installation"
+            return 1
+        fi
+
         cd "$SHELL_SOURCES_DIR" >/dev/null || return 1
         git pull 
         cd - >/dev/null 2>&1 || return 1
