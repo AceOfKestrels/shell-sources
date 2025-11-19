@@ -73,8 +73,6 @@ upgrade() {
         done
     fi
 
-    __keep-sudo-alive
-
     if [ "$upull" = 1 ]; then
         if ! __pullConfig; then
             echo "upgrade: ${F_FG_RED}fatal${F_RESET}: failed to pull config"
@@ -83,16 +81,20 @@ upgrade() {
     fi
 
     if [ -z "$FLAKE_PATH" ]; then
+        echo "Updating nix channels"
         if ! sudo nix-channel --update; then
             echo "upgrade: ${F_FG_RED}fatal${F_RESET}: failed to update channel"
             return 1
         fi
     else
-        if ! sudo nix flake update --flake "$FLAKE_PATH"; then
+        echo "Updating flake inputs for $FLAKE_PATH"
+        if ! nix flake update --flake "$FLAKE_PATH"; then
             echo -e "upgrade: ${F_FG_RED}fatal${F_RESET}: failed to update flake.lock"
             return 1
         fi
     fi
+
+    echo
 
     if ! rebuild "$action" "$@" ; then
         __rollbackChannelOrFlake
@@ -280,6 +282,8 @@ __commitFlakeLock() {
     fi
 
     cd "$FLAKE_PATH" >/dev/null || return 1
+
+    echo
     git add flake.lock || return 1
 
     __createFlakeCommit
@@ -311,6 +315,12 @@ __pullConfig() {
     fi
 
     cd "$configPath" >/dev/null || return 1
+    echo "Pulling config changes"
+    git fetch || return 1
+    echo
+    PAGER='cat' git log FETCH_HEAD...HEAD~1 --oneline --no-decorate || return 1
+    echo
     git pull --ff-only || return 1
+    echo
     cd - >/dev/null || return 1
 }
