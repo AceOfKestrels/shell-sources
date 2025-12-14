@@ -169,6 +169,8 @@ rebuild() {
         fi
     fi
 
+    __keep-sudo-alive
+
     if [ -z "$FLAKE_PATH" ]; then
         if where nh &> /dev/null; then
             if ! nh os "$action" -f '<nixpkgs/nixos>' "$@"; then
