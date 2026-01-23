@@ -5,7 +5,8 @@ alias gco='git checkout'
 alias gr='git rebase'
 alias gf='git fetch'
 alias gpl='git pull'
-alias pfusch='gp -f'
+alias pfusch='gp --force-with-lease'
+alias gpf='gp --force-with-lease'
 alias gpr="git-prune"
 
 if command -v __git_complete >/dev/null 2>&1; then
