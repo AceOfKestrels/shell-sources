@@ -56,31 +56,24 @@ ga() {
 
 gc() {
     if [ -z "$1" ]; then
-        echo -e "gc: ${F_FG_RED}fatal${F_RESET}: commit message requires a value"
-        echo
-        echo -e "${F_FG_BLUE}usage${F_RESET}: gc <commit message>"
-        return 1
+        git commit
+        return 0
     fi
 
     message="$1"
-    shift
-    
-    __checkCommitMessageLength "$message"
+    __checkCommitMessageLength "$message" 
 
     git commit -m "$message"
 }
 
 gac() {
     if [ -z "$1" ]; then
-        echo -e "gac: ${F_FG_RED}fatal${F_RESET}: commit message requires a value"
-        echo
-        echo -e "${F_FG_BLUE}usage${F_RESET}: gac <commit message> [files]\""
-        return 1
+        ga "$@"
+        git commit
+        return 0
     fi
 
     message="$1"
-    shift
-
     __checkCommitMessageLength "$message"
 
     ga "$@"
