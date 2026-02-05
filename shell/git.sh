@@ -74,6 +74,7 @@ gac() {
     fi
 
     message="$1"
+    shift
     __checkCommitMessageLength "$message"
 
     ga "$@"
