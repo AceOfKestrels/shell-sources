@@ -73,6 +73,12 @@ upgrade() {
         done
     fi
 
+    if [ -n "$SUDO_REFRESH_PID" ]; then
+        __stop_sudo_keeper
+    fi
+
+    __keep-sudo-alive
+
     if [ "$upull" = 1 ]; then
         if ! __pullConfig; then
             echo "upgrade: ${F_FG_RED}fatal${F_RESET}: failed to pull config"
@@ -96,7 +102,7 @@ upgrade() {
 
     echo
 
-    if ! rebuild "$action" "$@" ; then
+    if ! rebuild "$action" --no-sudo-keeper "$@" ; then
         __rollbackChannelOrFlake
         return 1
     elif ! [ "$action" = "test" ] & [ "$commitFlakeLock" = 1 ]; then
@@ -249,6 +255,10 @@ __rebuildHelp() {
 }
 
 __start_sudo_keeper() {
+    if [ -n "$SUDO_REFRESH_PID" ]; then
+        return
+    fi
+
     sudo -v
 
     set +m
@@ -263,8 +273,12 @@ __start_sudo_keeper() {
 }
 
 __stop_sudo_keeper() {
+    if [ -z "$SUDO_REFRESH_PID" ]; then
+        return
+    fi
     set +m
     kill "$SUDO_REFRESH_PID" 2>/dev/null
+    SUDO_REFRESH_PID=""
     sudo -k
 }
 
