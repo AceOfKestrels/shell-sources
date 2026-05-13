@@ -102,7 +102,7 @@ upgrade() {
 
     echo
 
-    if ! rebuild "$action" --no-sudo-keeper "$@" ; then
+    if ! rebuild "$action" "$@" ; then
         __rollbackChannelOrFlake
         return 1
     elif ! [ "$action" = "test" ] & [ "$commitFlakeLock" = 1 ]; then
